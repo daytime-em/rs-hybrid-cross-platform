@@ -1,0 +1,21 @@
+{
+  "author": "You <you@example.com>",
+  "name": "rustlib",
+  "version": "0.1.0",
+  "module": "js/binding_webpack.js",
+  "scripts": {
+    "build": "rimraf dist pkg && webpack",
+    "start": "rimraf dist pkg && webpack-dev-server --open -d",
+    "test": "cargo test && wasm-pack test --headless"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@wasm-tool/wasm-pack-plugin": "^1.1.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "lodash": "^4.17.21",
+    "rimraf": "^3.0.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^3.7.1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "cSpell.words": [
+    "bitvec",
+    "rustlib",
+    "thiz"
+  ],
+  "rust-analyzer.linkedProjects": [
+    "./Cargo.toml"
+  ]
+}

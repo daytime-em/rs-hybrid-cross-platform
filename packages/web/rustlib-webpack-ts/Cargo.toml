@@ -1,0 +1,32 @@
+[package]
+name = "rustlib-webpack-ts"
+version = "0.1.0"
+authors = ["Emily Dixon <edixon@mux.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+wasm-bindgen = "0.2.84"
+rustlib = { path = "../../rustlib/rustlib" }
+
+# This hook dumps panics to the logs, but it's optional because that's expensive
+console_error_panic_hook = { version = "0.1.7", optional = true }
+wasm-timer = "0.2.5"
+js-sys = "0.3.66"
+#web-sys is here, but configured in its own block
+
+[dependencies.web-sys]
+version = "0.3"
+features = [ "console" ] 
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.34"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

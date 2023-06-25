@@ -1,0 +1,13 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "cSpell.words": [
+    "bindgen",
+    "erasthones",
+    "Hasher",
+    "rustlib"
+],
+  "rust-analyzer.linkedProjects": [
+    "./Cargo.toml"
+  ]
+}

@@ -1,0 +1,15 @@
+# Android NDK cross-compile settings.
+# In addition to this config, you also need to install the side-by-side NDK or else it won't work
+
+# TODO: This will be different on different machines, so we really want a `config.toml.template`
+[target.aarch64-linux-android]
+linker = "/Users/edixon/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android21-clang"
+
+# TODO: need an ar? Doesn't seem to be in the ndk anymore. blog could be out of date
+#ar = "<project path>/greetings/NDK/arm64/bin/aarch64-linux-android-ar" 
+
+[target.armv7-linux-androideabi]
+linker = "/Users/edixon/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang"
+
+# TODO: need an ar? Doesn't seem to be in the ndk anymore. blog could be out of date
+#ar = "<project path>/greetings/NDK/arm/bin/arm-linux-androideabi-ar"

@@ -24,12 +24,12 @@ struct ContentView: View {
         let cb = StringAppendCallback { rsStr in
             return "\(rsStr.toString()) appended callback text"
         }
-        return appendStringViaCallback(startingWith: startingWith, cb).toString()
+        return doACallback(startingWith: startingWith, cb).toString()
     }
     
     func primes() -> String {
         let finder = SimplePrimeFinder()
-        let result = finder.findPrimesWithFastSieve(upTo: 20000)
+        let result = finder.findPrimesWithFastSieve(upTo: 2000)
         
 //        for prime in result.getPrimes() {
 //            print("prime \(prime)")

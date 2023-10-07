@@ -36,7 +36,7 @@ mod swift_ffi {
         fn print_something(); // symbols in modules must be declared with `use as`
         #[swift_bridge(swift_name = "didIAppear")]
         fn try_regenerating_bindings(); // You can't create bindings for functions with implementations
-        #[swift_bridge(swift_name = "appendStringViaCallback")]
+        #[swift_bridge(swift_name = "doACallback")]
         fn append_by_cb(
             #[swift_bridge(label = "startingWith")] start: String,
             callback: StringAppendCallback, // Sending Closures to Rust this way is not supported

@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		355F853A2AA4209B0057FB4A /* Rustlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355F85382AA420790057FB4A /* Rustlib.xcframework */; };
-		355F853B2AA4209B0057FB4A /* Rustlib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 355F85382AA420790057FB4A /* Rustlib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3592B51B2AD1183F00B03444 /* Rustlib.xcframework in Resources */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; };
+		3592B51C2AD1185100B03444 /* Rustlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; };
+		3592B51D2AD1185100B03444 /* Rustlib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		359D85992A5493C800540E0A /* iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D85982A5493C800540E0A /* iosApp.swift */; };
 		359D859B2A5493C800540E0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D859A2A5493C800540E0A /* ContentView.swift */; };
 		359D859D2A5493CA00540E0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 359D859C2A5493CA00540E0A /* Assets.xcassets */; };
@@ -47,7 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				355F853B2AA4209B0057FB4A /* Rustlib.xcframework in Embed Frameworks */,
+				3592B51D2AD1185100B03444 /* Rustlib.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,7 +57,7 @@
 
 /* Begin PBXFileReference section */
 		355F85332A95CF2B0057FB4A /* binding_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding_swift.h; sourceTree = "<group>"; };
-		355F85382AA420790057FB4A /* Rustlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rustlib.xcframework; path = Generated/Rustlib.xcframework; sourceTree = "<group>"; };
+		3592B51A2AD1179800B03444 /* Rustlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rustlib.xcframework; path = Generated/Rustlib.xcframework; sourceTree = "<group>"; };
 		359D85952A5493C800540E0A /* ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		359D85982A5493C800540E0A /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosApp.swift; sourceTree = "<group>"; };
 		359D859A2A5493C800540E0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -82,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				355F853A2AA4209B0057FB4A /* Rustlib.xcframework in Frameworks */,
+				3592B51C2AD1185100B03444 /* Rustlib.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +114,7 @@
 		359D858C2A5493C800540E0A = {
 			isa = PBXGroup;
 			children = (
-				355F85382AA420790057FB4A /* Rustlib.xcframework */,
+				3592B51A2AD1179800B03444 /* Rustlib.xcframework */,
 				35ADAF4C2A95676B0088D7C9 /* BridgingHeader.h */,
 				359D85C92A55F32B00540E0A /* Generated */,
 				359D85972A5493C800540E0A /* ios */,
@@ -299,6 +300,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3592B51B2AD1183F00B03444 /* Rustlib.xcframework in Resources */,
 				359D85D02A55F32B00540E0A /* .gitignore in Resources */,
 				359D85C32A54948A00540E0A /* build-rs.sh in Resources */,
 				359D85A02A5493CA00540E0A /* Preview Assets.xcassets in Resources */,

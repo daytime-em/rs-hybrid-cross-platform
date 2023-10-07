@@ -20,12 +20,12 @@ if [[ $CONFIGURATION == "Release" ]]; then
   cargo build --release --manifest-path $RS_MANIFEST_PATH --target "aarch64-apple-ios-sim"
   cargo build --release --manifest-path $RS_MANIFEST_PATH --target "x86_64-apple-ios"
 
-  rm -rf Generated/Rustlib.xcframework
-
   lipo $RS_TARGET_BASE/x86_64-apple-ios/release/libbinding_swift.a \
       $RS_TARGET_BASE/aarch64-apple-ios-sim/release/libbinding_swift.a \
       -create -output $RS_TARGET_BASE/release/libbinding_swift-sim.a
 
+  rm -rf Generated/Rustlib.xcframework
+  
   xcodebuild -create-xcframework \
     -library $RS_TARGET_BASE/aarch64-apple-ios/release/libbinding_swift.a \
     -headers Generated/binding_swift/binding_swift.h \

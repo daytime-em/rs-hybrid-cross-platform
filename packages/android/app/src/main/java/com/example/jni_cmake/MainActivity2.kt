@@ -38,7 +38,11 @@ class MainActivity2 : ComponentActivity() {
       RustAndroidProjectTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-          Greeting("Android")
+//          Greeting("Android")
+          Content(
+            isLoading = false,
+            onCalculateRequested = {}
+          )
         }
       }
     }
@@ -54,14 +58,19 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Content(modifier: Modifier = Modifier) {
-  val loadingState = remember(key1 = Object()) { mutableStateOf(false) }
-
+fun Content(
+  isLoading: Boolean,
+  onCalculateRequested: (Int) -> Unit,
+  modifier: Modifier = Modifier
+) {
   // Progress/Chart Area
-  if (loadingState.value) {
-
+  if (isLoading) {
+    ProgressView(modifier)
   } else {
-
+    RangeInput(
+      modifier = modifier,
+      onCalculateRequested = onCalculateRequested
+    )
   }
 }
 

@@ -98,24 +98,32 @@ fun RangeInput(onCalculateRequested: (Int) -> Unit, modifier: Modifier = Modifie
       )
       .padding(all = 12.dp)
   ) {
-    val numberInput = remember { mutableStateOf("") }
+    val numberInput = remember { mutableStateOf<Int?>(null) }
     val calcEnabled = remember { mutableStateOf(false) }
     TextField(
-      value = numberInput.value,
+      value = numberInput.value?.toString() ?: "",
+      placeholder = { Text("Positive Integer up to MAX_INT") },
       onValueChange = { newValue ->
         try {
-          calcEnabled.value = true
+          val valAsInt = newValue.toInt()
+          calcEnabled.value = valAsInt > 0
         } catch (e: NumberFormatException) {
           calcEnabled.value = false
         }
-        numberInput.value = newValue
+        numberInput.value = null
       },
       modifier = Modifier
         .fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(12.dp))
     Button(
-      onClick = { onCalculateRequested(numberInput.value.toInt()) },
+      onClick = {
+        val inputValue = numberInput.value
+        if (inputValue != null) {
+          onCalculateRequested(inputValue)
+        }
+      },
+      enabled = numberInput.value != null,
       modifier = Modifier
         .align(CenterHorizontally)
     ) {

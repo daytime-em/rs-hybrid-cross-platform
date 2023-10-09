@@ -131,7 +131,7 @@ fun RangeInput(
 
     TextField(
       value = inputStr ?: "",
-      placeholder = { Text("Positive Integer") },
+      placeholder = { Text("Integer 1 <= n <= MAX_INT") },
       onValueChange = { newValue ->
         onInputUpdated(newValue)
       },

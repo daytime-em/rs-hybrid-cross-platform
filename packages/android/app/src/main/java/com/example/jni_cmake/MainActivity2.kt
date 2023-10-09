@@ -67,8 +67,11 @@ fun Content(
   if (isLoading) {
     ProgressView(modifier)
   } else {
+    val numberInput = remember { mutableStateOf<String?>(null) }
     RangeInput(
       modifier = modifier,
+      inputStr = numberInput.value,
+      onInputUpdated = { numberInput.value = it },
       onCalculateRequested = onCalculateRequested
     )
   }
@@ -98,7 +101,8 @@ fun ProgressView(modifier: Modifier = Modifier) {
 @Composable
 fun RangeInput(
   modifier: Modifier = Modifier,
-  initialNumber: Int? = null,
+  inputStr: String?,
+  onInputUpdated: (String) -> Unit,
   onCalculateRequested: (Int) -> Unit,
 ) {
   Column(
@@ -111,31 +115,27 @@ fun RangeInput(
       )
       .padding(all = 12.dp)
   ) {
-    val numberInput = remember { mutableStateOf(initialNumber) }
-    var calcEnabled = false
+    var inputAsInt: Int? = null
+    val calcEnabled = try {
+      val valAsInt = (inputStr ?: "").toInt()
+      inputAsInt = valAsInt
+      valAsInt > 0
+    } catch (e: NumberFormatException) {
+      false
+    }
+
     TextField(
-      value = numberInput.value?.toString() ?: "",
+      value = inputStr ?: "",
       placeholder = { Text("Positive Integer up to MAX_INT") },
       onValueChange = { newValue ->
-        calcEnabled = try {
-          val valAsInt = newValue.toInt()
-          valAsInt > 0
-        } catch (e: NumberFormatException) {
-          false
-        }
-        numberInput.value = null
+        onInputUpdated(newValue)
       },
       modifier = Modifier
         .fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(12.dp))
     Button(
-      onClick = {
-        val inputValue = numberInput.value
-        if (inputValue != null) {
-          onCalculateRequested(inputValue)
-        }
-      },
+      onClick = { inputAsInt?.let { onCalculateRequested(it) } },
       enabled = calcEnabled,
       modifier = Modifier
         .align(CenterHorizontally)
@@ -157,7 +157,7 @@ fun ProgressPreview() {
 @Composable
 fun InputPreview() {
   RustAndroidProjectTheme {
-    RangeInput(initialNumber = -1, onCalculateRequested = { /*nothing, is preview */ })
+    RangeInput(inputStr = null, onInputUpdated = {}, onCalculateRequested = {})
   }
 }
 

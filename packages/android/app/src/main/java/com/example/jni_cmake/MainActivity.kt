@@ -203,6 +203,6 @@ fun InputPreview() {
 @Composable
 fun ScreenContent() {
   RustAndroidProjectTheme {
-    Content(isLoading = false, onCalculateRequested = {})
+    Content(isLoading = false, primes = null, onCalculateRequested = {})
   }
 }

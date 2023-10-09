@@ -47,8 +47,14 @@ pub fn fast_find_primes(up_to: Option<i32>) -> JsValue {
     let ret = js_obj.deref();
     Reflect::set(
         ret,
+        &JsValue::from_str("execTimeSecs"),
+        &JsValue::from_f64(internal_result.exec_time.as_secs_f64()),
+    )
+    .unwrap();
+    Reflect::set(
+        ret,
         &JsValue::from_str("primeCount"),
-        &JsValue::from_f64(internal_result.exec_time.as_secs_f64() as f64),
+        &JsValue::from_f64(internal_result.primes.len() as f64)
     )
     .unwrap();
 
@@ -84,8 +90,14 @@ pub fn simple_find_primes_inout(up_to: Option<i32>, result: &JsValue) {
     // Set the primeCount
     Reflect::set(
         result,
-        &JsValue::from_str("primeCount"),
+        &JsValue::from_str("execTimeSecs"),
         &JsValue::from_f64(internal_result.exec_time.as_secs_f64()),
+    )
+    .unwrap();
+    Reflect::set(
+        result,
+        &JsValue::from_str("primeCount"),
+        &JsValue::from_f64(internal_result.primes.len() as f64)
     )
     .unwrap();
     // Fill the array

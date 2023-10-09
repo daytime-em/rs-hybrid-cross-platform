@@ -34,6 +34,10 @@ public:
         return this->foundPrimes.prime_count;
     }
 
+    uint64_t getUpTo() {
+        return this->foundPrimes.up_to;
+    }
+
     uint64_t *getPrimes() {
         return this->foundPrimes.primes;
     }

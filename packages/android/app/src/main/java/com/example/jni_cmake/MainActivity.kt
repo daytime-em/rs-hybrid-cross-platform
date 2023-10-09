@@ -49,6 +49,7 @@ import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -89,7 +90,10 @@ class MainActivity2 : ComponentActivity() {
                 requestedNumber.value = requestedNum
                 val primesData = PrimeSieve.evaluate(requestedNum)
                 val densities = primeDensities(10, primesData.upTo, primesData.foundPrimes)
-                Log.i("MainActivity", "Found ${primesData.primeCount} primes on [1,$requestedNum]")
+                Log.i(
+                  "MainActivity", "Found ${"%,d".format(primesData.primeCount)} " +
+                          "primes on [1,${"%,d".format(primesData.primeCount)}]"
+                )
                 Log.v(
                   "MainActivity",
                   "last few found primes: ${primesData.foundPrimes.takeLast(20)}"
@@ -135,13 +139,14 @@ fun Content(
         if (calcRes != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            "Found ${calcRes.primesResult.primeCount} primes between 1 and ${calcRes.primesResult.upTo}",
+            "Found ${"%,d".format(calcRes.primesResult.primeCount)} primes between 1 and" +
+                    " ${"%,d".format(calcRes.primesResult.upTo)}",
             fontSize = TextUnit(12F, TextUnitType.Sp),
             fontWeight = FontWeight.Medium,
           )
           Spacer(modifier = modifier.size(12.dp))
           PrimesChart(
-            primeGroups = calcRes.primeDensities,
+            primeGroups = calcRes.primeGroups,
           )
         }
       }
@@ -160,7 +165,9 @@ fun PrimesChart(
     chart = lineChart(),
     model = entryModel,
     startAxis = rememberStartAxis(),
-    bottomAxis = rememberBottomAxis(),
+    bottomAxis = rememberBottomAxis(
+      valueFormatter = AxisValueFormatter { _, _ -> "" }
+    ),
     modifier = modifier,
   )
 }
@@ -269,5 +276,5 @@ fun ScreenContent() {
 
 data class CalculationResult(
   val primesResult: FoundPrimes,
-  val primeDensities: List<Int>
+  val primeGroups: List<Int>
 )

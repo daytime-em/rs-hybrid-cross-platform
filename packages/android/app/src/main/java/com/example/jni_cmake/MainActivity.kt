@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
@@ -25,17 +27,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jni_cmake.ui.theme.RustAndroidProjectTheme
 import com.example.jnilib.PrimeSieve
+import com.example.jnilib.model.FoundPrimes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -49,12 +56,19 @@ class MainActivity2 : ComponentActivity() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           val isLoading = remember { mutableStateOf(false) }
-          val primes = remember { mutableStateOf<Pair<Int, List<Long>>?>(null) }
+          val primesResult = remember { mutableStateOf<FoundPrimes?>(null) }
           val calculationScope = rememberCoroutineScope()
+
+          DisposableEffect(key1 = primesResult.value?.upTo) {
+            onDispose {
+              Log.d("MainActivity", "Disposing of primes result")
+              primesResult.value?.release()
+            }
+          }
 
           Content(
             isLoading = isLoading.value,
-            primesResult = primes.value,
+            primesResult = primesResult.value,
             onCalculateRequested = { requestedNum ->
               isLoading.value = true
               calculationScope.launch(Dispatchers.Default) {
@@ -67,7 +81,7 @@ class MainActivity2 : ComponentActivity() {
                 )
                 MainScope().launch {
                   // native side needs its mem back. Copy now to avoid disposing later
-                  primes.value = Pair(primesData.primeCount, primesData.foundPrimes)
+                  primesResult.value = primesData
                   primesData.release()
                   isLoading.value = false
                 }
@@ -83,7 +97,7 @@ class MainActivity2 : ComponentActivity() {
 @Composable
 fun Content(
   isLoading: Boolean,
-  primesResult: Pair<Int, List<Long>>?,
+  primesResult: FoundPrimes?,
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -153,13 +167,15 @@ fun RangeInput(
       .padding(all = 12.dp)
   ) {
     var inputAsInt: Int? = null
-    val calcEnabled = try {
-      val valAsInt = (inputStr ?: "").replace(Regex("[. -_,]"), "").toInt()
-      inputAsInt = valAsInt
-      valAsInt > 0
-    } catch (e: NumberFormatException) {
-      false
-    }
+    try {
+      val valAsInt = (inputStr ?: "")
+        .replace(",", "")
+        .replace(" ", "")
+        .toInt()//.replace(Regex("[. -_,]"), "").toInt()
+      if (valAsInt > 0) {
+        inputAsInt = valAsInt
+      }
+    } catch (_: NumberFormatException) { }
 
     TextField(
       value = inputStr ?: "",
@@ -167,12 +183,19 @@ fun RangeInput(
       onValueChange = { newValue ->
         onInputUpdated(newValue)
       },
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Number,
+        imeAction = ImeAction.Done,
+      ),
+      keyboardActions = KeyboardActions(
+        onDone = { inputAsInt?.let { onCalculateRequested(it) } }
+      ),
       modifier = Modifier
     )
     Spacer(modifier = Modifier.width(12.dp))
     Button(
       onClick = { inputAsInt?.let { onCalculateRequested(it) } },
-      enabled = calcEnabled,
+      enabled = inputAsInt != null,
       modifier = modifier
     ) {
       Icon(
@@ -195,7 +218,7 @@ fun ProgressPreview() {
 @Composable
 fun InputPreview() {
   RustAndroidProjectTheme {
-    RangeInput(inputStr = "1,000", onInputUpdated = {}, onCalculateRequested = {})
+    RangeInput(inputStr = "1,i 000", onInputUpdated = {}, onCalculateRequested = {})
   }
 }
 

@@ -6,6 +6,7 @@ package com.example.jnilib.model
 class FoundPrimes private constructor() {
 
   val primeCount: Int get() = nativePrimeCount()
+  val upTo: Int get() = nativeUpTo()
   val foundPrimes: List<Long> get() = nativeFoundPrimes().toList()
 
   @Suppress("unused") // used from the JNI side
@@ -15,4 +16,5 @@ class FoundPrimes private constructor() {
 
   private external fun nativePrimeCount(): Int
   private external fun nativeFoundPrimes(): LongArray
+  private external fun nativeUpTo(): Int
 }

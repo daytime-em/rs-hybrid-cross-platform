@@ -31,12 +31,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -66,7 +64,7 @@ class MainActivity2 : ComponentActivity() {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           val isLoading = remember { mutableStateOf(false) }
           val requestedNumber = remember { mutableStateOf<Int?>(null) }
-          val primesResult = remember { mutableStateOf<FoundPrimes?>(null) }
+          val primesResult = remember { mutableStateOf<CalculationResult?>(null) }
           val calculationScope = rememberCoroutineScope()
 
           DisposableEffect(key1 = requestedNumber.value) {
@@ -76,20 +74,21 @@ class MainActivity2 : ComponentActivity() {
               // null-out this *before* calling release, or the recompose will cause a crash
               if (resultToDispose != null) {
                 primesResult.value = null
-                resultToDispose.release()
+                resultToDispose.primesResult.release()
               }
             }
           }
 
           Content(
             isLoading = isLoading.value,
-            primesResult = primesResult.value,
+            calcRes = primesResult.value,
             onCalculateRequested = { requestedNum ->
               isLoading.value = true
               calculationScope.launch(Dispatchers.Default) {
                 Log.d("MainActivity", "Calculating primes up to $requestedNum")
                 requestedNumber.value = requestedNum
                 val primesData = PrimeSieve.evaluate(requestedNum)
+                val densities = primeDensities(10, primesData.upTo, primesData.foundPrimes)
                 Log.i("MainActivity", "Found ${primesData.primeCount} primes on [1,$requestedNum]")
                 Log.v(
                   "MainActivity",
@@ -97,7 +96,7 @@ class MainActivity2 : ComponentActivity() {
                 )
                 MainScope().launch {
                   // native side needs its mem back. Copy now to avoid disposing later
-                  primesResult.value = primesData
+                  primesResult.value = CalculationResult(primesData, densities)
                   isLoading.value = false
                 }
               }
@@ -112,7 +111,7 @@ class MainActivity2 : ComponentActivity() {
 @Composable
 fun Content(
   isLoading: Boolean,
-  primesResult: FoundPrimes?,
+  calcRes: CalculationResult?,
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -133,15 +132,17 @@ fun Content(
           onInputUpdated = { numberInput.value = it },
           onCalculateRequested = onCalculateRequested,
         )
-        if (primesResult != null) {
+        if (calcRes != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            "Found ${primesResult.foundPrimes.size} primes between 1 and ${primesResult.upTo}",
+            "Found ${calcRes.primesResult.primeCount} primes between 1 and ${calcRes.primesResult.upTo}",
             fontSize = TextUnit(12F, TextUnitType.Sp),
             fontWeight = FontWeight.Medium,
           )
           Spacer(modifier = modifier.size(12.dp))
-          PrimesChart(primes = primesResult.foundPrimes, upTo = primesResult.upTo)
+          PrimesChart(
+            primeGroups = calcRes.primeDensities,
+          )
         }
       }
     }
@@ -150,12 +151,9 @@ fun Content(
 
 @Composable
 fun PrimesChart(
-  primes: List<Long>,
-  upTo: Long,
+  primeGroups: List<Int>,
   modifier: Modifier = Modifier
 ) {
-  // todo - slow/awful somehow?
-  val primeGroups = primeDensities(10, upTo, primes)
   Log.d("MainActivity", "found densities $primeGroups")
   val entryModel = entryModelOf(*primeGroups.toTypedArray())
   Chart(
@@ -163,6 +161,7 @@ fun PrimesChart(
     model = entryModel,
     startAxis = rememberStartAxis(),
     bottomAxis = rememberBottomAxis(),
+    modifier = modifier,
   )
 }
 
@@ -212,7 +211,8 @@ fun RangeInput(
       if (valAsInt > 0) {
         inputAsInt = valAsInt
       }
-    } catch (_: NumberFormatException) { }
+    } catch (_: NumberFormatException) {
+    }
 
     TextField(
       value = inputStr ?: "",
@@ -263,6 +263,11 @@ fun InputPreview() {
 @Composable
 fun ScreenContent() {
   RustAndroidProjectTheme {
-    Content(isLoading = false, primesResult = null, onCalculateRequested = {})
+    Content(isLoading = false, calcRes = null, onCalculateRequested = {})
   }
 }
+
+data class CalculationResult(
+  val primesResult: FoundPrimes,
+  val primeDensities: List<Int>
+)

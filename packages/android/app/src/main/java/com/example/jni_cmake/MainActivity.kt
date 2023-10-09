@@ -131,7 +131,7 @@ fun Content(
         if (primesResult != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            "Found ${primesResult.foundPrimes} primes between 1 and ${primesResult.upTo}",
+            "Found ${primesResult.foundPrimes.size} primes between 1 and ${primesResult.upTo}",
             fontSize = TextUnit(12F, TextUnitType.Sp),
             fontWeight = FontWeight.Medium,
           )

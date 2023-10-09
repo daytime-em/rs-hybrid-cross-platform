@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,30 +50,29 @@ class MainActivity2 : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-  Text(
-    text = "Hello $name!",
-    modifier = modifier
-  )
-}
-
-@Composable
 fun Content(
   isLoading: Boolean,
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  // Progress/Chart Area
-  if (isLoading) {
-    ProgressView(modifier)
-  } else {
-    val numberInput = remember { mutableStateOf<String?>(null) }
-    RangeInput(
-      modifier = modifier,
-      inputStr = numberInput.value,
-      onInputUpdated = { numberInput.value = it },
-      onCalculateRequested = onCalculateRequested
-    )
+  Box(modifier = modifier
+    .fillMaxSize()
+    .padding(all = 16.dp)
+  ) {
+    // Progress/Chart Area
+    if (isLoading) {
+      ProgressView(
+        modifier = modifier.align(Center)
+      )
+    } else {
+      val numberInput = remember { mutableStateOf<String?>(null) }
+      RangeInput(
+        inputStr = numberInput.value,
+        onInputUpdated = { numberInput.value = it },
+        onCalculateRequested = onCalculateRequested,
+        modifier = modifier.align(Center)
+      )
+    }
   }
 }
 
@@ -105,7 +105,7 @@ fun RangeInput(
 ) {
   Column(
     modifier = modifier
-      .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
+//      .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
       .border(
         width = 1.dp,
         color = Color.Gray,
@@ -156,5 +156,13 @@ fun ProgressPreview() {
 fun InputPreview() {
   RustAndroidProjectTheme {
     RangeInput(inputStr = null, onInputUpdated = {}, onCalculateRequested = {})
+  }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScreenContent() {
+  RustAndroidProjectTheme {
+    Content(isLoading = false, onCalculateRequested = {})
   }
 }

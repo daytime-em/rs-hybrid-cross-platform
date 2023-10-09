@@ -1,21 +1,26 @@
 package com.example.jni_cmake
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,7 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +40,9 @@ import com.example.jni_cmake.ui.theme.RustAndroidProjectTheme
 class MainActivity2 : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
     setContent {
       RustAndroidProjectTheme {
         // A surface container using the 'background' color from the theme
@@ -55,22 +63,21 @@ fun Content(
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  Box(modifier = modifier
+  Box(
+    contentAlignment = Center,
+    modifier = modifier
     .fillMaxSize()
     .padding(all = 16.dp)
   ) {
     // Progress/Chart Area
     if (isLoading) {
-      ProgressView(
-        modifier = modifier.align(Center)
-      )
+      ProgressView()
     } else {
       val numberInput = remember { mutableStateOf<String?>(null) }
       RangeInput(
         inputStr = numberInput.value,
         onInputUpdated = { numberInput.value = it },
         onCalculateRequested = onCalculateRequested,
-        modifier = modifier.align(Center)
       )
     }
   }
@@ -103,9 +110,9 @@ fun RangeInput(
   onInputUpdated: (String) -> Unit,
   onCalculateRequested: (Int) -> Unit,
 ) {
-  Column(
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
     modifier = modifier
-//      .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
       .border(
         width = 1.dp,
         color = Color.Gray,
@@ -124,21 +131,22 @@ fun RangeInput(
 
     TextField(
       value = inputStr ?: "",
-      placeholder = { Text("Positive Integer up to MAX_INT") },
+      placeholder = { Text("Positive Integer") },
       onValueChange = { newValue ->
         onInputUpdated(newValue)
       },
       modifier = Modifier
-        .fillMaxWidth()
     )
-    Spacer(modifier = Modifier.height(12.dp))
+    Spacer(modifier = Modifier.width(12.dp))
     Button(
       onClick = { inputAsInt?.let { onCalculateRequested(it) } },
       enabled = calcEnabled,
-      modifier = Modifier
-        .align(CenterHorizontally)
+      modifier = modifier
     ) {
-      Text("Calculate!")
+      Icon(
+        Icons.Filled.Done,
+        contentDescription = "",
+      )
     }
   }
 }

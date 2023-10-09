@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +54,7 @@ class MainActivity2 : ComponentActivity() {
 
           Content(
             isLoading = isLoading.value,
+            primes = primes.value,
             onCalculateRequested = { requestedNum ->
               isLoading.value = true
               calculationScope.launch(Dispatchers.Default) {
@@ -64,7 +66,9 @@ class MainActivity2 : ComponentActivity() {
                   "last few found primes: ${primesData.foundPrimes.takeLast(20)}"
                 )
                 MainScope().launch {
+                  // native side needs its mem back. Copy now to avoid disposing later
                   primes.value = Pair(primesData.primeCount, primesData.foundPrimes)
+                  primesData.release()
                   isLoading.value = false
                 }
               }
@@ -79,6 +83,7 @@ class MainActivity2 : ComponentActivity() {
 @Composable
 fun Content(
   isLoading: Boolean,
+  primes: Pair<Int, List<Long>>?,
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -93,11 +98,19 @@ fun Content(
       ProgressView()
     } else {
       val numberInput = remember { mutableStateOf<String?>(null) }
-      RangeInput(
-        inputStr = numberInput.value,
-        onInputUpdated = { numberInput.value = it },
-        onCalculateRequested = onCalculateRequested,
-      )
+      Column() {
+        RangeInput(
+          inputStr = numberInput.value,
+          onInputUpdated = { numberInput.value = it },
+          onCalculateRequested = onCalculateRequested,
+        )
+        if (primes != null) {
+          Spacer(modifier = modifier.size(16.dp))
+          Text(
+            ""
+          )
+        }
+      }
     }
   }
 }

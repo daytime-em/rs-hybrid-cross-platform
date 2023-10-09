@@ -166,7 +166,7 @@ fun PrimesChart(
     model = entryModel,
     startAxis = rememberStartAxis(),
     bottomAxis = rememberBottomAxis(
-      valueFormatter = AxisValueFormatter { _, _ -> "" }
+      valueFormatter = { _, _ -> "" }
     ),
     modifier = modifier,
   )

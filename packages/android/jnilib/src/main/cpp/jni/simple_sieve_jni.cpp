@@ -9,7 +9,7 @@
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_example_jnilib_PrimeSieve_evaluate(JNIEnv *env, jclass clazz, jint up_to) {
-    rustlib::FoundPrimes rustPrimes = rustlib::simple_sieve(up_to);
+    rustlib::FoundPrimesFfi rustPrimes = rustlib::simple_sieve(up_to);
 
     __android_log_print(
             ANDROID_LOG_DEBUG,

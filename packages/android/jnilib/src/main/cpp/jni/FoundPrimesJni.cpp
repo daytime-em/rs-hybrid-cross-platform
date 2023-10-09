@@ -6,7 +6,7 @@
 #include "GlobalRefContext.h"
 #include "jni_helper.h"
 
-FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimes rustPrimes) {
+FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimesFfi rustPrimes) {
     // Create the JVM object that will interact with us
     jclass jvmFoundPrimes = env->FindClass("com/example/jnilib/model/FoundPrimes");
     jobject javaTwin = JniHelper::allocateObject(env, jvmFoundPrimes);

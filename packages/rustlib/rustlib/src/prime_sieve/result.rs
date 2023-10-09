@@ -3,7 +3,8 @@ use std::{hash::Hash, hash::Hasher, time::Duration};
 /// A number and its factors
 pub struct PrimesResult {
   pub exec_time: Duration,
-  pub primes: Vec<u64>
+  pub primes: Vec<u64>,
+  pub up_to: u64,
 }
 
 impl PrimesResult {

@@ -54,7 +54,7 @@ class MainActivity2 : ComponentActivity() {
 
           Content(
             isLoading = isLoading.value,
-            primes = primes.value,
+            primesResult = primes.value,
             onCalculateRequested = { requestedNum ->
               isLoading.value = true
               calculationScope.launch(Dispatchers.Default) {
@@ -83,7 +83,7 @@ class MainActivity2 : ComponentActivity() {
 @Composable
 fun Content(
   isLoading: Boolean,
-  primes: Pair<Int, List<Long>>?,
+  primesResult: Pair<Int, List<Long>>?,
   onCalculateRequested: (Int) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -104,10 +104,10 @@ fun Content(
           onInputUpdated = { numberInput.value = it },
           onCalculateRequested = onCalculateRequested,
         )
-        if (primes != null) {
+        if (primesResult != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            ""
+            "Found $primesResult primes between 1 and $."
           )
         }
       }
@@ -203,6 +203,6 @@ fun InputPreview() {
 @Composable
 fun ScreenContent() {
   RustAndroidProjectTheme {
-    Content(isLoading = false, primes = null, onCalculateRequested = {})
+    Content(isLoading = false, primesResult = null, onCalculateRequested = {})
   }
 }

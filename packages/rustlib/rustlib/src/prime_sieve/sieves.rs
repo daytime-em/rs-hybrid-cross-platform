@@ -1,5 +1,8 @@
 use bitvec::prelude::*;
-use std::{collections::BTreeSet, time::{SystemTime, Duration}};
+use std::{
+    collections::BTreeSet,
+    time::{Duration, SystemTime},
+};
 
 use super::PrimesResult;
 
@@ -11,9 +14,9 @@ pub fn slow_sieve(up_to: &u64) -> PrimesResult {
 }
 
 /// Computes primes using a bit buffer to store marked primes. This is the generally-
-/// accepted way to write one of these 
+/// accepted way to write one of these
 pub fn bit_sieve(up_to: u64) -> PrimesResult {
-  BitArraySieve::new(up_to).calculate()
+    BitArraySieve::new(up_to).calculate()
 }
 
 /// PrimeSieve with a pretty slow single-threaded algorithm
@@ -45,9 +48,9 @@ impl NumberLine for BTreeSet<u64> {
         let mut vec = Vec::<u64>::new();
         vec.push(2);
         for n in (3..*up_to).step_by(2) {
-          if !self.contains(&n) {
-            vec.push(n);
-          }
+            if !self.contains(&n) {
+                vec.push(n);
+            }
         }
         vec.shrink_to_fit(); // For luck
         vec
@@ -121,7 +124,6 @@ impl PrimeSieve for BitArraySieve {
     }
 }
 
-
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
 fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
@@ -131,15 +133,17 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
         0..=1 => {
             // What primes?
             PrimesResult {
-              primes: vec![],
-              exec_time: calc_total_time(started_at)
+                primes: vec![],
+                exec_time: calc_total_time(started_at),
+                up_to,
             }
-        },
+        }
         2 => {
             // Freebie
             PrimesResult {
                 primes: vec![2],
                 exec_time: calc_total_time(started_at),
+                up_to,
             }
         }
         3 => {
@@ -147,6 +151,7 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
             PrimesResult {
                 primes: vec![2, 3],
                 exec_time: calc_total_time(started_at),
+                up_to,
             }
         }
         _ => {
@@ -167,6 +172,7 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
             PrimesResult {
                 exec_time: calc_total_time(started_at),
                 primes: primes_vec,
+                up_to,
             }
         }
     }
@@ -187,8 +193,10 @@ fn mark_multiples(num: &u64, up_to: &u64, into: &mut dyn NumberLine) {
 }
 
 fn calc_total_time(starting_time: SystemTime) -> Duration {
-  let end_time = SystemTime::now();
-  end_time.duration_since(starting_time).expect("invalid starting_time")
+    let end_time = SystemTime::now();
+    end_time
+        .duration_since(starting_time)
+        .expect("invalid starting_time")
 }
 
 #[cfg(test)]
@@ -203,9 +211,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -217,9 +227,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -231,9 +243,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
         );
     }
 
@@ -245,9 +259,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -259,9 +275,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -273,9 +291,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -288,12 +308,14 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
-    
+
     #[test]
     #[ignore = "slow"]
     fn test_twenty_m() {
@@ -304,9 +326,11 @@ mod bit_sieve_tests {
         let result = bit_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 }
@@ -323,9 +347,11 @@ mod slow_sieve_tests {
         let result = simple_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -337,9 +363,11 @@ mod slow_sieve_tests {
         let result = simple_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -351,9 +379,11 @@ mod slow_sieve_tests {
         let result = simple_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -365,9 +395,11 @@ mod slow_sieve_tests {
         let result = simple_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -378,10 +410,12 @@ mod slow_sieve_tests {
 
         let result = simple_sieve(num);
 
-assert_eq!(
-            expected_prime_ct, result.primes_count(),
+        assert_eq!(
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 
@@ -392,16 +426,16 @@ assert_eq!(
 
         let result = simple_sieve(num);
 
-        
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
-
     }
 
-    #[test] 
+    #[test]
     #[ignore = "slow"]
     fn test_two_hundred_k() {
         // kinda slow
@@ -411,9 +445,11 @@ assert_eq!(
         let result = simple_sieve(num);
 
         assert_eq!(
-            expected_prime_ct, result.primes_count(),
+            expected_prime_ct,
+            result.primes_count(),
             "Expected {} primes, Got {}",
-            expected_prime_ct, result.primes_count()
+            expected_prime_ct,
+            result.primes_count()
         );
     }
 }

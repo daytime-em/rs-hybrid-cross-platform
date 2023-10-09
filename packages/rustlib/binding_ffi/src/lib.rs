@@ -3,13 +3,13 @@ mod outputs;
 use std::ffi::{CStr, c_char, c_void, CString};
 use rustlib::{self, FromPrimesResult};
 
-pub use outputs::FoundPrimes;
+pub use outputs::FoundPrimesFfi;
 pub use outputs::free_found_primes;
 
 #[no_mangle]
-pub extern "C" fn simple_sieve(up_to: u64) -> FoundPrimes {
+pub extern "C" fn simple_sieve(up_to: u64) -> FoundPrimesFfi {
     let result = rustlib::fast_sieve(up_to);
-    FoundPrimes::from_primes_result(&result)
+    FoundPrimesFfi::from_primes_result(&result)
 }
 
 // --- Just playing around below here

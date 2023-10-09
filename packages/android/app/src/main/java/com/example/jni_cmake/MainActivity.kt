@@ -48,6 +48,7 @@ class MainActivity2 : ComponentActivity() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           val isLoading = remember { mutableStateOf(false) }
+          val primes = remember { mutableStateOf<Pair<Int, List<Long>>?>(null) }
           val calculationScope = rememberCoroutineScope()
 
           Content(
@@ -62,7 +63,10 @@ class MainActivity2 : ComponentActivity() {
                   "MainActivity",
                   "last few found primes: ${primesData.foundPrimes.takeLast(20)}"
                 )
-                MainScope().launch { isLoading.value = false }
+                MainScope().launch {
+                  primes.value = Pair(primesData.primeCount, primesData.foundPrimes)
+                  isLoading.value = false
+                }
               }
             }
           )

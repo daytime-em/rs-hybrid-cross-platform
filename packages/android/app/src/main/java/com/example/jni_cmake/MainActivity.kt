@@ -38,7 +38,6 @@ class MainActivity2 : ComponentActivity() {
       RustAndroidProjectTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-//          Greeting("Android")
           Content(
             isLoading = false,
             onCalculateRequested = {}
@@ -157,13 +156,5 @@ fun ProgressPreview() {
 fun InputPreview() {
   RustAndroidProjectTheme {
     RangeInput(inputStr = null, onInputUpdated = {}, onCalculateRequested = {})
-  }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-  RustAndroidProjectTheme {
-    Greeting("Android")
   }
 }

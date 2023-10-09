@@ -154,7 +154,7 @@ fun RangeInput(
   ) {
     var inputAsInt: Int? = null
     val calcEnabled = try {
-      val valAsInt = (inputStr ?: "").toInt()
+      val valAsInt = (inputStr ?: "").replace(Regex("[. -_,]"), "").toInt()
       inputAsInt = valAsInt
       valAsInt > 0
     } catch (e: NumberFormatException) {
@@ -195,7 +195,7 @@ fun ProgressPreview() {
 @Composable
 fun InputPreview() {
   RustAndroidProjectTheme {
-    RangeInput(inputStr = null, onInputUpdated = {}, onCalculateRequested = {})
+    RangeInput(inputStr = "1,000", onInputUpdated = {}, onCalculateRequested = {})
   }
 }
 

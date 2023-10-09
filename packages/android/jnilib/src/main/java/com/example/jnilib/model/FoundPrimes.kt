@@ -1,7 +1,7 @@
 package com.example.jnilib.model
 
 /**
- * Primes found by the JNI layer. Cannot be instantiated from the JVM
+ * Primes found by the JNI layer. Cannot be instantiated from the JVM, use PrimeSieve
  */
 class FoundPrimes private constructor() {
 

@@ -25,7 +25,8 @@ pub extern "C" fn free_found_primes(found_primes: FoundPrimesFfi) {
 
 impl FromPrimesResult for FoundPrimesFfi {
     fn from_primes_result(result: &rustlib::PrimesResult) -> Self {
-        let primes_vec = result.primes.clone();
+        let /*mut*/ primes_vec = result.primes.clone();
+        //primes_vec.shrink_to_fit(); // When we free this, we want len & capacity to ==
         let mut vec_box = ManuallyDrop::new(primes_vec.into_boxed_slice());
         let exec_time_millis = result.exec_time.subsec_millis() as u64 + result.exec_time.as_secs();
         FoundPrimesFfi {

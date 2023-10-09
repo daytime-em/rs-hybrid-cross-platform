@@ -60,13 +60,19 @@ class MainActivity2 : ComponentActivity() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           val isLoading = remember { mutableStateOf(false) }
+          val requestedNumber = remember { mutableStateOf<Int?>(null) }
           val primesResult = remember { mutableStateOf<FoundPrimes?>(null) }
           val calculationScope = rememberCoroutineScope()
 
-          DisposableEffect(key1 = primesResult.value?.upTo) {
+          DisposableEffect(key1 = requestedNumber.value) {
             onDispose {
               Log.d("MainActivity", "Disposing of primes result")
-              primesResult.value?.release()
+              val resultToDispose = primesResult.value
+              // null-out this *before* calling release, or the recompose will cause a crash
+              if (resultToDispose != null) {
+                primesResult.value = null
+                resultToDispose.release()
+              }
             }
           }
 
@@ -77,6 +83,7 @@ class MainActivity2 : ComponentActivity() {
               isLoading.value = true
               calculationScope.launch(Dispatchers.Default) {
                 Log.d("MainActivity", "Calculating primes up to $requestedNum")
+                requestedNumber.value = requestedNum
                 val primesData = PrimeSieve.evaluate(requestedNum)
                 Log.i("MainActivity", "Found ${primesData.primeCount} primes on [1,$requestedNum]")
                 Log.v(
@@ -86,7 +93,6 @@ class MainActivity2 : ComponentActivity() {
                 MainScope().launch {
                   // native side needs its mem back. Copy now to avoid disposing later
                   primesResult.value = primesData
-                  primesData.release()
                   isLoading.value = false
                 }
               }

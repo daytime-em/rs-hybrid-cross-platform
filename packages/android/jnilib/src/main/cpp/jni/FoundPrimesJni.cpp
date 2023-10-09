@@ -21,6 +21,10 @@ FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimesFfi rustPrimes) 
 
 void FoundPrimesJni::release(JNIEnv *env) {
     if (this->jvmRef) {
+        // clear the 'pointer' to this object in the jvm
+        auto nativeRefField = JniHelper::getNativeRef(env, this->jvmRef->getJavaObject());
+        env->SetLongField(this->jvmRef->getJavaObject(), nativeRefField, 0);
+
         // give up our java resources
         this->jvmRef->deleteRef(env);
         this->jvmRef = nullptr;

@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import com.example.jni_cmake.ui.theme.RustAndroidProjectTheme
 import com.example.jnilib.PrimeSieve
 import com.example.jnilib.model.FoundPrimes
+import com.patrykandpatrick.vico.core.entry.entryModelOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -148,7 +149,7 @@ fun PrimesChart(
   primes: List<Long>,
   modifier: Modifier = Modifier
 ) {
-
+  // todo - slow/awful somehow?
 }
 
 @Composable

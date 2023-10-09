@@ -9,7 +9,7 @@ pub use outputs::free_found_primes;
 #[no_mangle]
 pub extern "C" fn simple_sieve(up_to: u64) -> FoundPrimes {
     let result = rustlib::fast_sieve(up_to);
-    FoundPrimes::from_primes_result(result)
+    FoundPrimes::from_primes_result(&result)
 }
 
 // --- Just playing around below here

@@ -4,8 +4,9 @@ use rustlib::FromPrimesResult;
 
 #[repr(C)]
 pub struct FoundPrimes {
-    pub prime_count: u64,
+    pub exec_time_millis: u64,
     pub primes: *mut u64,
+    prime_count: usize,
 }
 
 #[no_mangle]
@@ -22,11 +23,13 @@ pub extern "C" fn free_found_primes(found_primes: FoundPrimes) {
 }
 
 impl FromPrimesResult for FoundPrimes {
-    fn from_primes_result(result: rustlib::PrimesResult) -> Self {
-        let primes_vec = result.primes;
+    fn from_primes_result(result: &rustlib::PrimesResult) -> Self {
+        let primes_vec = result.primes.clone();
         let mut vec_box = ManuallyDrop::new(primes_vec.into_boxed_slice());
+        let exec_time_millis = result.exec_time.subsec_millis() as u64 + result.exec_time.as_secs();
         FoundPrimes {
-            prime_count: result.count,
+            prime_count: result.primes_count(),
+            exec_time_millis,
             primes: vec_box.as_mut_ptr(),
         }
     }

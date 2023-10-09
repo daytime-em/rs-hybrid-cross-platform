@@ -9,7 +9,7 @@ mod swift_ffi {
         type FoundPrimes;
 
         #[swift_bridge(swift_name = "getPrimeCount")]
-        fn get_value(&self) -> u64;
+        fn get_value(&self) -> f64;
 
         #[swift_bridge(swift_name = "getPrimes")]
         fn get_primes(&self) -> Vec<u64>;
@@ -74,8 +74,8 @@ impl SimplePrimeFinder {
 }
 
 impl FoundPrimes {
-    fn get_value(&self) -> u64 {
-        self.internal_result.count
+    fn get_value(&self) -> f64 {
+        self.internal_result.exec_time.as_secs_f64()
     }
 
     fn get_primes(&self) -> Vec<u64> {

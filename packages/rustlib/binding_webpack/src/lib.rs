@@ -48,7 +48,7 @@ pub fn fast_find_primes(up_to: Option<i32>) -> JsValue {
     Reflect::set(
         ret,
         &JsValue::from_str("primeCount"),
-        &JsValue::from_f64(internal_result.count as f64),
+        &JsValue::from_f64(internal_result.exec_time.as_secs_f64() as f64),
     )
     .unwrap();
 
@@ -85,7 +85,7 @@ pub fn simple_find_primes_inout(up_to: Option<i32>, result: &JsValue) {
     Reflect::set(
         result,
         &JsValue::from_str("primeCount"),
-        &JsValue::from_f64(internal_result.count as f64),
+        &JsValue::from_f64(internal_result.exec_time.as_secs_f64()),
     )
     .unwrap();
     // Fill the array

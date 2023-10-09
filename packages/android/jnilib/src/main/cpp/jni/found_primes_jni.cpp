@@ -61,7 +61,7 @@ Java_com_example_jnilib_model_FoundPrimes_nativeFoundPrimes(JNIEnv *env, jobject
 }
 
 extern "C"
-JNIEXPORT jint JNICALL
+JNIEXPORT jlong JNICALL
 Java_com_example_jnilib_model_FoundPrimes_nativeUpTo(JNIEnv *env, jobject thiz) {
     auto *nativeTwin = (FoundPrimesJni *) JniHelper::nativeTwinOfObject(env, thiz);
     if (nativeTwin) {

@@ -1,6 +1,6 @@
 package com.example.jni_cmake
 
-fun primeDensities(regions: Int, upTo: Int, primes: List<Long>): List<Int> {
+fun primeDensities(regions: Int, upTo: Long, primes: List<Long>): List<Int> {
   val regionSize = if (upTo < 5) {
     1
   } else {

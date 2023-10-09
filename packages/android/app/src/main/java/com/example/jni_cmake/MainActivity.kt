@@ -137,7 +137,7 @@ fun Content(
             fontWeight = FontWeight.Medium,
           )
           Spacer(modifier = modifier.size(12.dp))
-          PrimesChart(primes = primesResult.foundPrimes)
+          PrimesChart(primes = primesResult.foundPrimes, upTo = primesResult.upTo)
         }
       }
     }
@@ -147,9 +147,12 @@ fun Content(
 @Composable
 fun PrimesChart(
   primes: List<Long>,
+  upTo: Long,
   modifier: Modifier = Modifier
 ) {
   // todo - slow/awful somehow?
+  val primeGroups = primeDensities(10, upTo, primes)
+  Log.d("MainActivity", "found densities $primeGroups")
 }
 
 @Composable

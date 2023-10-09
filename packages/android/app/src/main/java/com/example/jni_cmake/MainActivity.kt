@@ -36,9 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.jni_cmake.ui.theme.RustAndroidProjectTheme
 import com.example.jnilib.PrimeSieve
@@ -121,8 +125,11 @@ fun Content(
         if (primesResult != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            "Found $primesResult primes between 1 and $primesResult.up."
+            "Found ${primesResult.foundPrimes} primes between 1 and ${primesResult.upTo}",
+            fontSize = TextUnit(12F, TextUnitType.Sp),
+            fontWeight = FontWeight.Medium,
           )
+          Spacer(modifier = modifier.size(12.dp))
         }
       }
     }

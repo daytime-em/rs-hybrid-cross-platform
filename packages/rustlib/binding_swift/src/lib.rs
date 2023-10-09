@@ -8,10 +8,13 @@ mod swift_ffi {
     extern "Rust" {
         type FoundPrimes;
 
-        #[swift_bridge(swift_name = "getPrimeCount")]
-        fn get_value(&self) -> u64;
+        #[swift_bridge(swift_name = "primeCount")]
+        fn get_count(&self) -> usize;
 
-        #[swift_bridge(swift_name = "getPrimes")]
+        #[swift_bridge(swift_name = "upToNumber")]
+        fn get_up_to(&self) -> u64;
+
+        #[swift_bridge(swift_name = "primes")]
         fn get_primes(&self) -> Vec<u64>;
     }
 
@@ -74,8 +77,12 @@ impl SimplePrimeFinder {
 }
 
 impl FoundPrimes {
-    fn get_value(&self) -> u64 {
-        self.internal_result.count
+    fn get_count(&self) -> usize {
+        self.internal_result.primes_count() 
+    }
+
+    fn get_up_to(&self) -> u64 {
+      self.internal_result.up_to
     }
 
     fn get_primes(&self) -> Vec<u64> {

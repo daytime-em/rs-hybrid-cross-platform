@@ -35,7 +35,7 @@ struct ContentView: View {
 //            print("prime \(prime)")
 //        }
         
-        return String(result.getPrimeCount())
+        return String(result.primeCount())
     }
     
     func something() {

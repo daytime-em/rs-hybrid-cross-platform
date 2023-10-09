@@ -10,6 +10,11 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_jnilib_model_FoundPrimes_release(JNIEnv *env, jobject thiz) {
     auto *nativeTwin = (FoundPrimesJni *) JniHelper::nativeTwinOfObject(env, thiz);
+    __android_log_print(
+            ANDROID_LOG_VERBOSE,
+            "FoundPrimes",
+            "Cleaning up rust mem"
+    );
     if (nativeTwin) {
         // Release the refs we're holding to the java object so it can be gc'd, then delete the
         //  native object.
@@ -52,5 +57,16 @@ Java_com_example_jnilib_model_FoundPrimes_nativeFoundPrimes(JNIEnv *env, jobject
         return out;
     } else {
         return nullptr;
+    }
+}
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_example_jnilib_model_FoundPrimes_nativeUpTo(JNIEnv *env, jobject thiz) {
+    auto *nativeTwin = (FoundPrimesJni *) JniHelper::nativeTwinOfObject(env, thiz);
+    if (nativeTwin) {
+        return static_cast<jint>(nativeTwin->getUpTo());
+    } else {
+        return -1;
     }
 }

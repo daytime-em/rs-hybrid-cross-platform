@@ -6,7 +6,7 @@
 #include "GlobalRefContext.h"
 #include "jni_helper.h"
 
-FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimes rustPrimes) {
+FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimesFfi rustPrimes) {
     // Create the JVM object that will interact with us
     jclass jvmFoundPrimes = env->FindClass("com/example/jnilib/model/FoundPrimes");
     jobject javaTwin = JniHelper::allocateObject(env, jvmFoundPrimes);
@@ -21,6 +21,10 @@ FoundPrimesJni::FoundPrimesJni(JNIEnv *env, rustlib::FoundPrimes rustPrimes) {
 
 void FoundPrimesJni::release(JNIEnv *env) {
     if (this->jvmRef) {
+        // clear the 'pointer' to this object in the jvm
+        auto nativeRefField = JniHelper::getNativeRef(env, this->jvmRef->getJavaObject());
+        env->SetLongField(this->jvmRef->getJavaObject(), nativeRefField, 0);
+
         // give up our java resources
         this->jvmRef->deleteRef(env);
         this->jvmRef = nullptr;

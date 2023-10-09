@@ -20,7 +20,7 @@ public:
      * Create a FoundPrimesJni from the "rust direction", ie, instantiating the JVM object to be
      * returned
      */
-    FoundPrimesJni(JNIEnv*, rustlib::FoundPrimes);
+    FoundPrimesJni(JNIEnv*, rustlib::FoundPrimesFfi);
     ~FoundPrimesJni();
 
     jobject asJavaObject();
@@ -34,13 +34,17 @@ public:
         return this->foundPrimes.prime_count;
     }
 
+    uint64_t getUpTo() {
+        return this->foundPrimes.up_to;
+    }
+
     uint64_t *getPrimes() {
         return this->foundPrimes.primes;
     }
 
     void release(JNIEnv*);
 private:
-    rustlib::FoundPrimes foundPrimes;
+    rustlib::FoundPrimesFfi foundPrimes;
     // sorta-raii for the jni. This object shares ownership of itself with the JVM until the JVM
     // calls release() to give it back. When/how the jvm code chooses to call release() is not the
     // concern of the jni layer.

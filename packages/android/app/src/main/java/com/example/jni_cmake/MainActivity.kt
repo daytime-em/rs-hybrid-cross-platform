@@ -136,10 +136,19 @@ fun Content(
             fontWeight = FontWeight.Medium,
           )
           Spacer(modifier = modifier.size(12.dp))
+          PrimesChart(primes = primesResult.foundPrimes)
         }
       }
     }
   }
+}
+
+@Composable
+fun PrimesChart(
+  primes: List<Long>,
+  modifier: Modifier = Modifier
+) {
+
 }
 
 @Composable

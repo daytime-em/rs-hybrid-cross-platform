@@ -47,6 +47,10 @@ import androidx.compose.ui.unit.dp
 import com.example.jni_cmake.ui.theme.RustAndroidProjectTheme
 import com.example.jnilib.PrimeSieve
 import com.example.jnilib.model.FoundPrimes
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -153,6 +157,13 @@ fun PrimesChart(
   // todo - slow/awful somehow?
   val primeGroups = primeDensities(10, upTo, primes)
   Log.d("MainActivity", "found densities $primeGroups")
+  val entryModel = entryModelOf(*primeGroups.toTypedArray())
+  Chart(
+    chart = lineChart(),
+    model = entryModel,
+    startAxis = rememberStartAxis(),
+    bottomAxis = rememberBottomAxis(),
+  )
 }
 
 @Composable

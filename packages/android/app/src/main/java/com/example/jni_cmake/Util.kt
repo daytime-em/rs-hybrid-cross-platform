@@ -1,13 +1,14 @@
 package com.example.jni_cmake
 
+import kotlin.math.ceil
+
 fun primeDensities(regions: Int, upTo: Long, primes: List<Long>): List<Int> {
   val regionSize = if (upTo < 5) {
     1
   } else {
-    upTo / regions
+    ceil(upTo / regions.toDouble()).toInt()
   }
 
-  // todo - here's hoping
   return primes.groupBy { it / regionSize }.map { entry -> entry.value.size }
 }
 

@@ -107,7 +107,7 @@ fun Content(
         if (primesResult != null) {
           Spacer(modifier = modifier.size(16.dp))
           Text(
-            "Found $primesResult primes between 1 and $."
+            "Found $primesResult primes between 1 and $primesResult.up."
           )
         }
       }

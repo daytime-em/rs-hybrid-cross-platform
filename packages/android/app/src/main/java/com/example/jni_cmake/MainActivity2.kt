@@ -87,7 +87,11 @@ fun ProgressView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RangeInput(onCalculateRequested: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun RangeInput(
+  modifier: Modifier = Modifier,
+  initialNumber: Int? = null,
+  onCalculateRequested: (Int) -> Unit,
+) {
   Column(
     modifier = modifier
       .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
@@ -98,17 +102,17 @@ fun RangeInput(onCalculateRequested: (Int) -> Unit, modifier: Modifier = Modifie
       )
       .padding(all = 12.dp)
   ) {
-    val numberInput = remember { mutableStateOf<Int?>(null) }
-    val calcEnabled = remember { mutableStateOf(false) }
+    val numberInput = remember { mutableStateOf(initialNumber) }
+    var calcEnabled = false
     TextField(
       value = numberInput.value?.toString() ?: "",
       placeholder = { Text("Positive Integer up to MAX_INT") },
       onValueChange = { newValue ->
-        try {
+        calcEnabled = try {
           val valAsInt = newValue.toInt()
-          calcEnabled.value = valAsInt > 0
+          valAsInt > 0
         } catch (e: NumberFormatException) {
-          calcEnabled.value = false
+          false
         }
         numberInput.value = null
       },
@@ -123,7 +127,7 @@ fun RangeInput(onCalculateRequested: (Int) -> Unit, modifier: Modifier = Modifie
           onCalculateRequested(inputValue)
         }
       },
-      enabled = numberInput.value != null,
+      enabled = calcEnabled,
       modifier = Modifier
         .align(CenterHorizontally)
     ) {
@@ -144,7 +148,7 @@ fun ProgressPreview() {
 @Composable
 fun InputPreview() {
   RustAndroidProjectTheme {
-    RangeInput(onCalculateRequested = { /*nothing, is preview */ })
+    RangeInput(initialNumber = -1, onCalculateRequested = { /*nothing, is preview */ })
   }
 }
 

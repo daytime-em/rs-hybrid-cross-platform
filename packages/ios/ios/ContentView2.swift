@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Charts
 
 struct ContentView2: View {
    
@@ -25,6 +26,20 @@ struct ContentView2: View {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
                     .font(.system(size: 12, weight: .light))
             }
+            Chart {
+                BarMark(
+                    x: .value("Type", "Swift"),
+                    y: .value("Total Count", 5)
+                )
+                BarMark(
+                    x: .value("Type", "UI"),
+                    y: .value("Total Count", 4)
+                )
+                BarMark(
+                    x: .value("Type", "Chart"),
+                    y: .value("Total Count", 3)
+                )
+             }
         }
         Spacer()
     }

@@ -28,6 +28,9 @@ struct ContentView2: View {
             {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
                     .font(.system(size: 12, weight: .light))
+                ApproxDensityChart(
+                    approxDensities: approxDensities
+                )
             }
         }
         Spacer()

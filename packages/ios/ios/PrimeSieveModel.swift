@@ -9,7 +9,7 @@ import Foundation
 
 /// Model class for the prime sieve. Can do one calculation at a time.
 class PrimeSieveModel : ObservableObject {
-    @Published var foundPrimes: FoundPrimes? = nil
+    @Published var calculationResult: CalculationResult? = nil
     @Published var calculating: Bool = false
     
     /// Calculate primes up to the given integer value. If a calculation is in progress, this will be ignored
@@ -19,9 +19,17 @@ class PrimeSieveModel : ObservableObject {
             calculateTask = Task { [self] in
                 let foundPrimes = SimplePrimeFinder().findPrimesWithFastSieve(upTo: UInt64(num))
                 print("Found \(foundPrimes.primeCount()) between 1 and \(foundPrimes.upToNumber())")
+                let calcRes = CalculationResult(
+                    foundPrimes: foundPrimes,
+                    approxDensities: groupPrimes(
+                        regions: 50,
+                        originalUpTo: Int(num),
+                        primes: foundPrimes.primesVec().copyToSwiftArray()
+                    )
+                )
                 Task {
                     await MainActor.run {
-                        self.foundPrimes = foundPrimes
+                        self.calculationResult = calcRes
                         self.calculateTask = nil
                         self.calculating = false
                     }
@@ -30,5 +38,22 @@ class PrimeSieveModel : ObservableObject {
         }
     }
     
+    private func groupPrimes(regions: Int, originalUpTo: Int, primes: [UInt64]) -> [Int] {
+        let regionSize = {
+            if (originalUpTo < 5) {
+                return UInt64(1)
+            } else {
+                return UInt64(ceil(Double(originalUpTo) / Double(regions)))
+            }
+        }()
+        return Dictionary(grouping: primes) { $0 / regionSize }
+            .map { _, value in value.count }
+    }
+    
     private var calculateTask: Task<(), Never>? = nil
+}
+
+struct CalculationResult {
+    let foundPrimes: FoundPrimes
+    let approxDensities: [Int]
 }

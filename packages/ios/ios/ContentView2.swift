@@ -22,7 +22,10 @@ struct ContentView2: View {
                 primeSieveModel.maybeCalculate(primesUpTo: upToNumber)
             }
             .padding()
-            if let foundPrimes = primeSieveModel.foundPrimes {
+            if 
+                let foundPrimes = primeSieveModel.calculationResult?.foundPrimes,
+                let approxDensities = primeSieveModel.calculationResult?.approxDensities
+            {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
                     .font(.system(size: 12, weight: .light))
             }

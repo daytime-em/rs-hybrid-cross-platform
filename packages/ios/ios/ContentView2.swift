@@ -18,21 +18,10 @@ struct ContentView2: View {
 
 fileprivate struct NumberInput: View {
     
-//    @State private var numberInput: Double? = nil
     @State private var numberInput: String = ""
-    
-    private let inputFormatter: Formatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.usesGroupingSeparator = true
-        formatter.groupingSeparator = ","
-        
-        return formatter
-    }()
     
     var body: some View {
         HStack {
-            // todo - why doesn't this actually format anything
             TextField(
                 "Positive integer",
                 text: $numberInput

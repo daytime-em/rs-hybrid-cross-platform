@@ -24,7 +24,7 @@ struct ContentView2: View {
             .padding()
             if
                 let foundPrimes = primeSieveModel.calculationResult?.foundPrimes,
-                let approxDensities = primeSieveModel.calculationResult?.approxDensities
+                let approxDistribution = primeSieveModel.calculationResult?.approxDistribution
             {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
                     .font(
@@ -33,8 +33,8 @@ struct ContentView2: View {
                             weight: .light
                         )
                     )
-                ApproxDensityChart(
-                    approxDensities: approxDensities
+                PrimeDistributionChart(
+                    approxDistribution: approxDistribution
                 )
             }
         }
@@ -42,20 +42,21 @@ struct ContentView2: View {
     }
 }
 
-fileprivate struct ApproxDensityChart: View {
+fileprivate struct PrimeDistributionChart: View {
     
-    let approxDensities: [Int]
+    let approxDistribution: [Int]
     
     var body: some View {
         Chart {
             ForEach(
-                mapToChatItems(from: approxDensities)
+                mapToChatItems(from: approxDistribution)
             ) { chartItem in
                 LineMark(
                     x: .value("", chartItem.xValue),
                     y: .value("", chartItem.yValue)
                 )
             }
+                .cornerRadius(20.0, style: .continuous)
         }
         .frame(height: 350)
     }
@@ -70,6 +71,7 @@ fileprivate struct ApproxDensityChart: View {
                 )
             )
         }
+        print("mapped to chart items - \(outList.map { "x:\($0.xValue) y:\($0.yValue)" })")
         return outList
     }
     
@@ -117,7 +119,6 @@ fileprivate struct NumberInput: View {
     }
     
     private func inputAsInteger() -> UInt32? {
-        print("NumberInput is: \(String(describing: numberInput))")
         return UInt32(numberInput)
     }
 }

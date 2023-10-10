@@ -21,7 +21,7 @@ class PrimeSieveModel : ObservableObject {
                 print("Found \(foundPrimes.primeCount()) between 1 and \(foundPrimes.upToNumber())")
                 let calcRes = CalculationResult(
                     foundPrimes: foundPrimes,
-                    approxDensities: groupPrimes(
+                    approxDistribution: groupPrimes(
                         regions: 50,
                         originalUpTo: Int(num),
                         primes: foundPrimes.primesVec().copyToSwiftArray()
@@ -43,11 +43,19 @@ class PrimeSieveModel : ObservableObject {
             if (originalUpTo < 5) {
                 return UInt64(1)
             } else {
-                return UInt64(floor(Double(originalUpTo) / Double(regions)))
+                return UInt64(ceil(Double(originalUpTo) / Double(regions)))
             }
         }()
-        return Dictionary(grouping: primes) { $0 / regionSize }
-            .map { _, value in value.count }
+        
+        var regions: [Int] = []
+        for prime in primes {
+            let proportion = prime / regionSize
+            if !(regions.count < proportion) {
+                regions.append(1)
+            }
+            regions[Int(proportion)] += 1
+        }
+        return regions
     }
     
     private var calculateTask: Task<(), Never>? = nil
@@ -55,5 +63,5 @@ class PrimeSieveModel : ObservableObject {
 
 struct CalculationResult {
     let foundPrimes: FoundPrimes
-    let approxDensities: [Int]
+    let approxDistribution: [Int]
 }

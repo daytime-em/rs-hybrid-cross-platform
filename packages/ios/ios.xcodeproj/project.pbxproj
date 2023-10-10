@@ -10,11 +10,10 @@
 		3592B51B2AD1183F00B03444 /* Rustlib.xcframework in Resources */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; };
 		3592B51C2AD1185100B03444 /* Rustlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; };
 		3592B51D2AD1185100B03444 /* Rustlib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3592B51A2AD1179800B03444 /* Rustlib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35993C802AD4EACA0025081E /* ContentView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35993C7F2AD4EACA0025081E /* ContentView2.swift */; };
+		35993C802AD4EACA0025081E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35993C7F2AD4EACA0025081E /* ContentView.swift */; };
 		35993C822AD5C9C40025081E /* PrimeSieveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35993C812AD5C9C40025081E /* PrimeSieveModel.swift */; };
 		35993C842AD5D1920025081E /* RustVec+ToArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35993C832AD5D1920025081E /* RustVec+ToArray.swift */; };
 		359D85992A5493C800540E0A /* iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D85982A5493C800540E0A /* iosApp.swift */; };
-		359D859B2A5493C800540E0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D859A2A5493C800540E0A /* ContentView.swift */; };
 		359D859D2A5493CA00540E0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 359D859C2A5493CA00540E0A /* Assets.xcassets */; };
 		359D85A02A5493CA00540E0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 359D859F2A5493CA00540E0A /* Preview Assets.xcassets */; };
 		359D85AA2A5493CA00540E0A /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D85A92A5493CA00540E0A /* iosTests.swift */; };
@@ -61,12 +60,11 @@
 /* Begin PBXFileReference section */
 		355F85332A95CF2B0057FB4A /* binding_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding_swift.h; sourceTree = "<group>"; };
 		3592B51A2AD1179800B03444 /* Rustlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rustlib.xcframework; path = Generated/Rustlib.xcframework; sourceTree = "<group>"; };
-		35993C7F2AD4EACA0025081E /* ContentView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView2.swift; sourceTree = "<group>"; };
+		35993C7F2AD4EACA0025081E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		35993C812AD5C9C40025081E /* PrimeSieveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimeSieveModel.swift; sourceTree = "<group>"; };
 		35993C832AD5D1920025081E /* RustVec+ToArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RustVec+ToArray.swift"; sourceTree = "<group>"; };
 		359D85952A5493C800540E0A /* ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		359D85982A5493C800540E0A /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosApp.swift; sourceTree = "<group>"; };
-		359D859A2A5493C800540E0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		359D859C2A5493CA00540E0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		359D859F2A5493CA00540E0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		359D85A52A5493CA00540E0A /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,8 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				359D85982A5493C800540E0A /* iosApp.swift */,
-				359D859A2A5493C800540E0A /* ContentView.swift */,
-				35993C7F2AD4EACA0025081E /* ContentView2.swift */,
+				35993C7F2AD4EACA0025081E /* ContentView.swift */,
 				359D85C22A54948A00540E0A /* build-rs.sh */,
 				359D859C2A5493CA00540E0A /* Assets.xcassets */,
 				359D859E2A5493CA00540E0A /* Preview Content */,
@@ -359,12 +356,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359D859B2A5493C800540E0A /* ContentView.swift in Sources */,
 				35993C822AD5C9C40025081E /* PrimeSieveModel.swift in Sources */,
 				359D85D12A55F32B00540E0A /* binding_swift.swift in Sources */,
 				359D85992A5493C800540E0A /* iosApp.swift in Sources */,
 				35993C842AD5D1920025081E /* RustVec+ToArray.swift in Sources */,
-				35993C802AD4EACA0025081E /* ContentView2.swift in Sources */,
+				35993C802AD4EACA0025081E /* ContentView.swift in Sources */,
 				35A133762AA7BB93003357AA /* StringAppendCallback.swift in Sources */,
 				359D85D22A55F32B00540E0A /* SwiftBridgeCore.swift in Sources */,
 			);

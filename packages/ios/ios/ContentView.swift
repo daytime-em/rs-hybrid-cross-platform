@@ -2,51 +2,136 @@
 //  ContentView.swift
 //  ios
 //
-//  Created by Emily Dixon on 7/4/23.
+//  Created by Emily Dixon on 10/9/23.
 //
 
 import SwiftUI
+import Charts
 
 struct ContentView: View {
+    
+    @EnvironmentObject var primeSieveModel: PrimeSieveModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text(primes())
-            Text(appendedText())
+        Spacer()
+        if primeSieveModel.calculating {
+            Text("Loading...")
+        } else {
+            NumberInput { upToNumber in
+                primeSieveModel.calculating = true
+                primeSieveModel.maybeCalculate(primesUpTo: upToNumber)
+            }
+            .padding()
+            if
+                let foundPrimes = primeSieveModel.calculationResult?.foundPrimes,
+                let approxDistribution = primeSieveModel.calculationResult?.approxDistribution
+            {
+                Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
+                    .font(
+                        .system(
+                            size: 12,
+                            weight: .light
+                        )
+                    )
+                PrimeDistributionChart(
+                    approxDistribution: approxDistribution
+                )
+            }
         }
-        .padding()
-    }
-    
-    func appendedText() -> String {
-        let startingWith = "String with";
-        let cb = StringAppendCallback { rsStr in
-            return "\(rsStr.toString()) appended callback text"
-        }
-        return doACallback(startingWith: startingWith, cb).toString()
-    }
-    
-    func primes() -> String {
-        let finder = SimplePrimeFinder()
-        let result = finder.findPrimesWithFastSieve(upTo: 2000)
-        
-//        for prime in result.getPrimes() {
-//            print("prime \(prime)")
-//        }
-        
-        return String(result.primeCount())
-    }
-    
-    func something() {
-        printViaPrivateDelegate()
-        didIAppear()
-        printViaRedeclareMethod()
+        Spacer()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+fileprivate struct PrimeDistributionChart: View {
+    
+    let approxDistribution: [Int]
+    
+    var body: some View {
+        Chart {
+            ForEach(
+                mapToChatItems(from: approxDistribution)
+            ) { chartItem in
+                LineMark(
+                    x: .value("", chartItem.xValue),
+                    y: .value("", chartItem.yValue)
+                )
+                .cornerRadius(20.0, style: .continuous)
+            }
+        }
+        .frame(height: 350)
+    }
+    
+    private func mapToChatItems(from: [Int]) -> [ChartItem] {
+        var outList: [ChartItem] = []
+        for index in 0..<from.count {
+            outList.append(
+                ChartItem(
+                    yValue: from[index],
+                    xValue: index
+                )
+            )
+        }
+        return outList
+    }
+    
+    private struct ChartItem : Identifiable {
+        let yValue: Int
+        let xValue: Int
+        var id: String { String(describing: yValue) }
+    }
+}
+
+fileprivate struct NumberInput: View {
+    
+    @State private var numberInput: String = ""
+    let handleCalculate: (UInt32) -> Void
+    
+    var body: some View {
+        HStack {
+            TextField(
+                "Positive integer",
+                text: $numberInput
+            )
+            .onSubmit {
+                if let num = inputAsInteger() {
+                    calculate(number: num)
+                }
+            }
+            Button(action: {
+                if let num = inputAsInteger() {
+                    calculate(number: num)
+                }
+            }, label: {
+                Text("Go!")
+            })
+            .disabled(inputAsInteger() == nil)
+        }
+        .padding()
+        .background {
+            RoundedRectangle(cornerRadius: 8.0)
+                .strokeBorder(style: StrokeStyle(lineWidth: 1.0))
+        }
+    }
+    
+    private func calculate(number: UInt32) {
+        self.handleCalculate(number)
+    }
+    
+    private func inputAsInteger() -> UInt32? {
+        return UInt32(numberInput)
+    }
+}
+
+#Preview("Screen Content") {
+    ContentView()
+        .environmentObject(PrimeSieveModel())
+}
+
+#Preview("Number Input") {
+    VStack(alignment: .leading) {
+        Spacer()
+        NumberInput(handleCalculate: {_ in })
+            .padding()
+        Spacer()
     }
 }

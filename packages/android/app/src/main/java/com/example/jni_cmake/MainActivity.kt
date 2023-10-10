@@ -89,7 +89,7 @@ class MainActivity2 : ComponentActivity() {
                 Log.d("MainActivity", "Calculating primes up to $requestedNum")
                 requestedNumber.value = requestedNum
                 val primesData = PrimeSieve.evaluate(requestedNum)
-                val densities = primeDensities(10, primesData.upTo, primesData.foundPrimes)
+                val densities = primeDensities(50, primesData.upTo, primesData.foundPrimes)
                 Log.i(
                   "MainActivity", "Found ${"%,d".format(primesData.primeCount)} " +
                           "primes on [1,${"%,d".format(primesData.primeCount)}]"

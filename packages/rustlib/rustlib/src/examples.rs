@@ -17,8 +17,7 @@ pub fn append_location(str: &str) -> String {
 }
 
 /**
- * Invokes a closure you pass in, appending something to the string you gave
- * and returning the appended string
+ * Invokes a closure you pass in, returning whatever the closure returns 
  */
 pub fn invoke_a_closure_cb<F>(str: String, func: F) -> String
 where

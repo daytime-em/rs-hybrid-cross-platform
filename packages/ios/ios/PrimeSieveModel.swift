@@ -43,7 +43,7 @@ class PrimeSieveModel : ObservableObject {
             if (originalUpTo < 5) {
                 return UInt64(1)
             } else {
-                return UInt64(ceil(Double(originalUpTo) / Double(regions)))
+                return UInt64(floor(Double(originalUpTo) / Double(regions)))
             }
         }()
         return Dictionary(grouping: primes) { $0 / regionSize }

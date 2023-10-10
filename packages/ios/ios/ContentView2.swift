@@ -27,7 +27,12 @@ struct ContentView2: View {
                 let approxDensities = primeSieveModel.calculationResult?.approxDensities
             {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
-                    .font(.system(size: 12, weight: .light))
+                    .font(
+                        .system(
+                            size: 12,
+                            weight: .light
+                        )
+                    )
                 ApproxDensityChart(
                     approxDensities: approxDensities
                 )
@@ -52,6 +57,7 @@ fileprivate struct ApproxDensityChart: View {
                 )
             }
         }
+        .frame(height: 350)
     }
     
     private func mapToChatItems(from: [Int]) -> [ChartItem] {

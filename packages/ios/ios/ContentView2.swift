@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct ContentView2: View {
-   
+    
     @EnvironmentObject var primeSieveModel: PrimeSieveModel
     
     var body: some View {
@@ -22,29 +22,52 @@ struct ContentView2: View {
                 primeSieveModel.maybeCalculate(primesUpTo: upToNumber)
             }
             .padding()
-            if 
+            if
                 let foundPrimes = primeSieveModel.calculationResult?.foundPrimes,
                 let approxDensities = primeSieveModel.calculationResult?.approxDensities
             {
                 Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
                     .font(.system(size: 12, weight: .light))
             }
-            Chart {
-                BarMark(
-                    x: .value("Type", "Swift"),
-                    y: .value("Total Count", 5)
-                )
-                BarMark(
-                    x: .value("Type", "UI"),
-                    y: .value("Total Count", 4)
-                )
-                BarMark(
-                    x: .value("Type", "Chart"),
-                    y: .value("Total Count", 3)
-                )
-             }
         }
         Spacer()
+    }
+}
+
+fileprivate struct ApproxDensityChart: View {
+    
+    let approxDensities: [Int]
+    
+    var body: some View {
+        Chart {
+            ForEach(
+                mapToChatItems(from: approxDensities)
+            ) { chartItem in
+                LineMark(
+                    x: .value("", chartItem.xValue),
+                    y: .value("", chartItem.yValue)
+                )
+            }
+        }
+    }
+    
+    private func mapToChatItems(from: [Int]) -> [ChartItem] {
+        var outList: [ChartItem] = []
+        for index in 0..<from.count {
+            outList.append(
+                ChartItem(
+                    yValue: from[index],
+                    xValue: index
+                )
+            )
+        }
+        return outList
+    }
+    
+    private struct ChartItem : Identifiable {
+        let yValue: Int
+        let xValue: Int
+        var id: String { String(describing: yValue) }
     }
 }
 

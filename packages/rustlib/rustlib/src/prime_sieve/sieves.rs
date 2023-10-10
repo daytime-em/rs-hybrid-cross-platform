@@ -19,7 +19,6 @@ pub fn bit_sieve(up_to: u64) -> PrimesResult {
     BitArraySieve::new(up_to).calculate()
 }
 
-/// PrimeSieve with a pretty slow single-threaded algorithm
 /// Relies on trees to store marked numbers, very slow.
 struct TreeSieve {
     limit: u64,

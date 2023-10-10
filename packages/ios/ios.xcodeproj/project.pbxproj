@@ -142,11 +142,11 @@
 			children = (
 				359D85982A5493C800540E0A /* iosApp.swift */,
 				359D859A2A5493C800540E0A /* ContentView.swift */,
+				35993C7F2AD4EACA0025081E /* ContentView2.swift */,
 				359D85C22A54948A00540E0A /* build-rs.sh */,
 				359D859C2A5493CA00540E0A /* Assets.xcassets */,
 				359D859E2A5493CA00540E0A /* Preview Content */,
 				35A133752AA7BB93003357AA /* StringAppendCallback.swift */,
-				35993C7F2AD4EACA0025081E /* ContentView2.swift */,
 			);
 			path = ios;
 			sourceTree = "<group>";

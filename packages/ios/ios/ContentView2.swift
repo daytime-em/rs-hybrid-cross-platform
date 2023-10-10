@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView2: View {
     var body: some View {
         Spacer()
-        NumberInput(numberInput: nil)
+        NumberInput()
             .padding()
         Spacer()
     }
@@ -18,10 +18,12 @@ struct ContentView2: View {
 
 fileprivate struct NumberInput: View {
     
-    @State private var numberInput: String
+//    @State private var numberInput: Double? = nil
+    @State private var numberInput: String = ""
     
     private let inputFormatter: Formatter = {
         let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = true
         formatter.groupingSeparator = ","
         
@@ -30,29 +32,39 @@ fileprivate struct NumberInput: View {
     
     var body: some View {
         HStack {
-            // todo - format this
+            // todo - why doesn't this actually format anything
             TextField(
-                value: $numberInput,
-                formatter: inputFormatter,
-                prompt: Text("Positive Integer")
-            ) {
-                Text("Number input")
+                "Positive integer",
+                text: $numberInput
+            )
+            .onSubmit {
+                if let num = inputAsInteger() {
+                    calculate(number: num)
+                }
             }
             Button(action: {
-                // todo - calculate
+                if let num = inputAsInteger() {
+                    calculate(number: num)
+                }
             }, label: {
                 Text("Go!")
             })
+            .disabled(inputAsInteger() == nil)
         }
         .padding()
         .background {
-            RoundedRectangle(cornerRadius: 4.0)
+            RoundedRectangle(cornerRadius: 8.0)
                 .strokeBorder(style: StrokeStyle(lineWidth: 1.0))
         }
     }
     
-    init(numberInput: String?) {
-        self.numberInput = numberInput ?? ""
+    private func calculate(number: UInt32) {
+        
+    }
+    
+    private func inputAsInteger() -> UInt32? {
+        print("NumberInput is: \(String(describing: numberInput))")
+        return UInt32(numberInput)
     }
 }
 
@@ -63,7 +75,7 @@ fileprivate struct NumberInput: View {
 #Preview("Number Input") {
     VStack(alignment: .leading) {
         Spacer()
-        NumberInput(numberInput: "3000")
+        NumberInput()
             .padding()
         Spacer()
     }

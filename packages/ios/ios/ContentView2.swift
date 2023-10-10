@@ -8,10 +8,24 @@
 import SwiftUI
 
 struct ContentView2: View {
+   
+    @EnvironmentObject var primeSieveModel: PrimeSieveModel
+    
     var body: some View {
         Spacer()
-        NumberInput()
+        if primeSieveModel.calculating {
+            Text("Loading...")
+        } else {
+            NumberInput { upToNumber in
+                primeSieveModel.calculating = true
+                primeSieveModel.maybeCalculate(primesUpTo: upToNumber)
+            }
             .padding()
+            if let foundPrimes = primeSieveModel.foundPrimes {
+                Text("Found \(foundPrimes.primeCount()) primes between 1 and \(foundPrimes.upToNumber())")
+                    .font(.system(size: 12, weight: .light))
+            }
+        }
         Spacer()
     }
 }
@@ -19,6 +33,7 @@ struct ContentView2: View {
 fileprivate struct NumberInput: View {
     
     @State private var numberInput: String = ""
+    let handleCalculate: (UInt32) -> Void
     
     var body: some View {
         HStack {
@@ -48,7 +63,7 @@ fileprivate struct NumberInput: View {
     }
     
     private func calculate(number: UInt32) {
-        
+        self.handleCalculate(number)
     }
     
     private func inputAsInteger() -> UInt32? {
@@ -64,7 +79,7 @@ fileprivate struct NumberInput: View {
 #Preview("Number Input") {
     VStack(alignment: .leading) {
         Spacer()
-        NumberInput()
+        NumberInput(handleCalculate: {_ in })
             .padding()
         Spacer()
     }

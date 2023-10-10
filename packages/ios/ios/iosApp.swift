@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct iosApp: App {
+    
+    @StateObject var primeSieveModel = PrimeSieveModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView2()
+                .environmentObject(primeSieveModel)
         }
     }
 }

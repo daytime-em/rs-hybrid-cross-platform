@@ -14,7 +14,7 @@ mod swift_ffi {
         #[swift_bridge(swift_name = "upToNumber")]
         fn get_up_to(&self) -> u64;
 
-        #[swift_bridge(swift_name = "primes")]
+        #[swift_bridge(swift_name = "primesVec")]
         fn get_primes(&self) -> Vec<u64>;
     }
 

@@ -10,14 +10,14 @@ use super::PrimesResult;
 /// primes in a tree.
 pub fn tree_sieve(up_to: u64) -> PrimesResult {
     let mut sieve = TreeSieve::new(up_to);
-    calculate_generic(up_to, &mut sieve)
+    calculate(sieve.limit, &mut sieve.numbers)
 }
 
 /// Computes primes using a bit buffer to store marked primes. This is the generally-
 /// accepted way to write one of these
 pub fn bit_sieve(up_to: u64) -> PrimesResult {
     let mut sieve = BitArraySieve::new(up_to);
-    calculate_generic(up_to, &mut sieve)
+    calculate(sieve.limit, &mut sieve.numbers)
 }
 
 /// Relies on trees to store marked numbers, very slow.
@@ -32,9 +32,30 @@ struct BitArraySieve {
     numbers: BitVec,
 }
 
+impl TreeSieve {
+    fn new(up_to: u64) -> TreeSieve {
+        TreeSieve {
+            limit: up_to,
+            numbers: BTreeSet::new(),
+        }
+    }
+}
+
+impl BitArraySieve {
+    fn new(up_to: u64) -> BitArraySieve {
+        let mut vec: BitVec<_, _> = BitVec::<usize, Lsb0>::new();
+        // Pay the cost of (potentially) 1 usize in order to index from 1
+        let len = (up_to as usize) + 1;
+        vec.resize(len, false);
+        BitArraySieve {
+            limit: up_to,
+            numbers: vec,
+        }
+    }
+}
+
 trait PrimeSieve {
-    fn new(up_to: u64) -> Self where Self: Sized;
-    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized;
+    fn number_line<'a>(&self) -> &'a mut dyn NumberLine;
     // fn calculate(&mut self) -> PrimesResult;
 }
 
@@ -94,49 +115,34 @@ impl NumberLine for BitVec {
     }
 }
 
-impl PrimeSieve for TreeSieve {
-    fn new(up_to: u64) -> Self {
-        TreeSieve {
-            limit: up_to,
-            numbers: BTreeSet::new(),
-        }
-    }
+// impl PrimeSieve for TreeSieve {
+//     fn number_line<'a>(&self) -> &'a mut dyn NumberLine {
+//         &mut self.numbers
+//     }
 
-    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized {
-        &mut self.numbers
-    }
+//     // fn calculate(&mut self) -> PrimesResult {
+//     // calculate_generic(self.limit, &mut self.numbers)
+//     // }
+// }
 
-    // fn calculate(&mut self) -> PrimesResult {
-        // calculate_generic(self.limit, &mut self.numbers)
-    // }
-}
+// impl PrimeSieve for BitArraySieve {
+//     fn number_line<'a>(&self) -> &'a mut dyn NumberLine
+//     where
+//         Self: Sized,
+//     {
+//         &mut self.numbers
+//     }
 
-impl PrimeSieve for BitArraySieve {
-    fn new(up_to: u64) -> Self {
-        let mut vec: BitVec<_, _> = BitVec::<usize, Lsb0>::new();
-        // Pay the cost of (potentially) 1 usize in order to index from 1
-        let len = (up_to as usize) + 1;
-        vec.resize(len, false);
-        BitArraySieve {
-            limit: up_to,
-            numbers: vec,
-        }
-    }
-
-    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized {
-      &mut self.numbers
-    }
-
-    // fn calculate(&mut self) -> PrimesResult {
-        // calculate_generic(self.limit, &mut self.numbers)
-    // }
-}
+//     // fn calculate(&mut self) -> PrimesResult {
+//     // calculate_generic(self.limit, &mut self.numbers)
+//     // }
+// }
 
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
-fn calculate_generic(up_to: u64, sieve: &mut dyn PrimeSieve) -> PrimesResult {
-    let started_at = Duration::from_millis(0);//SystemTime::now();
-    let number_line = &mut sieve.number_line();
+fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
+    let started_at = Duration::from_millis(0); //SystemTime::now();
+    // let number_line = sieve.number_line();
 
     match up_to {
         0..=1 => {

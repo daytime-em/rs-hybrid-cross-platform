@@ -10,13 +10,14 @@ use super::PrimesResult;
 /// primes in a tree.
 pub fn tree_sieve(up_to: u64) -> PrimesResult {
     let mut sieve = TreeSieve::new(up_to);
-    sieve.calculate()
+    calculate_generic(up_to, &mut sieve)
 }
 
 /// Computes primes using a bit buffer to store marked primes. This is the generally-
 /// accepted way to write one of these
 pub fn bit_sieve(up_to: u64) -> PrimesResult {
-    BitArraySieve::new(up_to).calculate()
+    let mut sieve = BitArraySieve::new(up_to);
+    calculate_generic(up_to, &mut sieve)
 }
 
 /// Relies on trees to store marked numbers, very slow.
@@ -32,8 +33,9 @@ struct BitArraySieve {
 }
 
 trait PrimeSieve {
-    fn new(up_to: u64) -> Self;
-    fn calculate(&mut self) -> PrimesResult;
+    fn new(up_to: u64) -> Self where Self: Sized;
+    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized;
+    // fn calculate(&mut self) -> PrimesResult;
 }
 
 trait NumberLine {
@@ -100,9 +102,13 @@ impl PrimeSieve for TreeSieve {
         }
     }
 
-    fn calculate(&mut self) -> PrimesResult {
-        calculate_generic(self.limit, &mut self.numbers)
+    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized {
+        &mut self.numbers
     }
+
+    // fn calculate(&mut self) -> PrimesResult {
+        // calculate_generic(self.limit, &mut self.numbers)
+    // }
 }
 
 impl PrimeSieve for BitArraySieve {
@@ -117,15 +123,20 @@ impl PrimeSieve for BitArraySieve {
         }
     }
 
-    fn calculate(&mut self) -> PrimesResult {
-        calculate_generic(self.limit, &mut self.numbers)
+    fn number_line<'a>(&self) -> &'a mut dyn NumberLine where Self: Sized {
+      &mut self.numbers
     }
+
+    // fn calculate(&mut self) -> PrimesResult {
+        // calculate_generic(self.limit, &mut self.numbers)
+    // }
 }
 
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
-fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
+fn calculate_generic(up_to: u64, sieve: &mut dyn PrimeSieve) -> PrimesResult {
     let started_at = Duration::from_millis(0);//SystemTime::now();
+    let number_line = &mut sieve.number_line();
 
     match up_to {
         0..=1 => {

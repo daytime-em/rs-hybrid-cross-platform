@@ -66,7 +66,7 @@ export default function Home() {
           {primeListText(primeData)}
         </p>
 
-        {/*TODO: Remove this , show something fun instead*/}
+        {/*TODO: Remove this , show something fun instead ;) */}
         <p className={styles.description}>
           <button
             onClick={() => {

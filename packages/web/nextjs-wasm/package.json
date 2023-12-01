@@ -3,8 +3,11 @@
     "node": ">=18"
   },
   "scripts": {
+    "predev": "bash build-wasm.sh",
     "dev": "next dev",
+    "prebuild": "bash build-wasm.sh",
     "build": "next build",
+    "prestart": "bash build-wasm.sh",
     "start": "next start"
   },
   "dependencies": {

@@ -5,7 +5,10 @@ use js_sys::Function;
 use js_sys::Object;
 use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
+use web_clock::WasmClock;
 use web_sys::console;
+
+mod web_clock;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -41,7 +44,12 @@ extern "C" {
 pub fn fast_find_primes(up_to: Option<i32>) -> JsValue {
     let expected_up_to =
         up_to.unwrap_or_else(|| panic!("An integer up to {} must be provided.", std::i32::MAX));
-    let internal_result = internal::fast_sieve(expected_up_to as u64);
+    
+
+    let internal_result = internal::fast_sieve_clock(
+      expected_up_to as u64, 
+      &WasmClock::new() // remember, not all normal std libraries are available in wasm.
+    );
 
     let js_obj = Object::new();
     let ret = js_obj.deref();
@@ -85,7 +93,10 @@ pub fn simple_find_primes_inout(up_to: Option<i32>, result: &JsValue) {
         panic!("a result object must be supplied")
     }
 
-    let internal_result = internal::simple_sieve(expected_up_to as u64);
+    let internal_result = internal::simple_sieve_clock(
+      expected_up_to as u64,
+      &WasmClock::new() // remember, not all normal std libraries are available in wasm.
+    );
 
     // Set the primeCount
     Reflect::set(
@@ -149,6 +160,6 @@ fn log(str: String) {
 
 mod internal {
     pub use rustlib::examples::invoke_a_closure_cb;
-    pub use rustlib::fast_sieve;
-    pub use rustlib::simple_sieve;
+    pub use rustlib::fast_sieve_clock;
+    pub use rustlib::simple_sieve_clock;
 }

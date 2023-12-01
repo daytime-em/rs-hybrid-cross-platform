@@ -9,54 +9,49 @@ use super::{PrimesResult, Clock};
 /// Computes primes using a sieve that tries to minimize mem use by storing marked
 /// primes in a tree.
 pub fn tree_sieve(up_to: u64, clock: &dyn Clock) -> PrimesResult {
-    let mut sieve = TreeSieve::new(up_to);
-    calculate(sieve.limit, &mut sieve.numbers, clock)
+    let mut data = TreeSieveData::new(up_to);
+    calculate(data.limit, &mut data.numbers, clock)
 }
 
 /// Computes primes using a bit buffer to store marked primes. This is the generally-
 /// accepted way to write one of these
 pub fn bit_sieve(up_to: u64, clock: &dyn Clock) -> PrimesResult {
-    let mut sieve = BitArraySieve::new(up_to);
-    calculate(sieve.limit, &mut sieve.numbers, clock)
+    let mut data = BitSieveData::new(up_to);
+    calculate(data.limit, &mut data.numbers, clock)
 }
 
 /// Relies on trees to store marked numbers, very slow.
-struct TreeSieve {
+struct TreeSieveData {
     limit: u64,
     numbers: BTreeSet<u64>,
 }
 
 /// PrimeSieve that uses a bit vector to represent the numbers. Marked numbers are 0
-struct BitArraySieve {
+struct BitSieveData {
     limit: u64,
     numbers: BitVec,
 }
 
-impl TreeSieve {
-    fn new(up_to: u64) -> TreeSieve {
-        TreeSieve {
+impl TreeSieveData {
+    fn new(up_to: u64) -> TreeSieveData {
+        TreeSieveData {
             limit: up_to,
             numbers: BTreeSet::new(),
         }
     }
 }
 
-impl BitArraySieve {
-    fn new(up_to: u64) -> BitArraySieve {
+impl BitSieveData {
+    fn new(up_to: u64) -> BitSieveData {
         let mut vec: BitVec<_, _> = BitVec::<usize, Lsb0>::new();
         // Pay the cost of (potentially) 1 usize in order to index from 1
         let len = (up_to as usize) + 1;
         vec.resize(len, false);
-        BitArraySieve {
+        BitSieveData {
             limit: up_to,
             numbers: vec,
         }
     }
-}
-
-trait PrimeSieve {
-    fn number_line<'a>(&self) -> &'a mut dyn NumberLine;
-    // fn calculate(&mut self) -> PrimesResult;
 }
 
 trait NumberLine {

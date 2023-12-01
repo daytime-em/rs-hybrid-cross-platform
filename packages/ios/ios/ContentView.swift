@@ -84,6 +84,7 @@ fileprivate struct PrimeDistributionChart: View {
 fileprivate struct NumberInput: View {
     
     @State private var numberInput: String = ""
+    @FocusState private var textFieldFocused: Bool
     let handleCalculate: (UInt32) -> Void
     
     var body: some View {
@@ -92,12 +93,15 @@ fileprivate struct NumberInput: View {
                 "Positive integer",
                 text: $numberInput
             )
+            .focused($textFieldFocused, equals: true)
             .onSubmit {
                 if let num = inputAsInteger() {
                     calculate(number: num)
                 }
             }
+            
             Button(action: {
+                textFieldFocused = false
                 if let num = inputAsInteger() {
                     calculate(number: num)
                 }

@@ -101,7 +101,6 @@ impl PrimeSieve for TreeSieve {
     }
 
     fn calculate(&mut self) -> PrimesResult {
-        //calculate_generic(self.limit, &mut self.numbers)
         calculate_generic(self.limit, &mut self.numbers)
     }
 }
@@ -126,14 +125,14 @@ impl PrimeSieve for BitArraySieve {
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
 fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
-    let started_at = SystemTime::now();
+    let started_at = Duration::from_millis(0);//SystemTime::now();
 
     match up_to {
         0..=1 => {
             // What primes?
             PrimesResult {
                 primes: vec![],
-                exec_time: calc_total_time(started_at),
+                exec_time: Duration::from_millis(0),
                 up_to,
             }
         }
@@ -141,7 +140,7 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
             // Freebie
             PrimesResult {
                 primes: vec![2],
-                exec_time: calc_total_time(started_at),
+                exec_time: Duration::from_millis(0),
                 up_to,
             }
         }
@@ -149,7 +148,8 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
             // Freebie
             PrimesResult {
                 primes: vec![2, 3],
-                exec_time: calc_total_time(started_at),
+                // exec_time: calc_total_time(started_at),
+                exec_time: Duration::from_millis(0),
                 up_to,
             }
         }
@@ -169,7 +169,8 @@ fn calculate_generic(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResu
 
             let primes_vec = number_line.count_primes(&up_to);
             PrimesResult {
-                exec_time: calc_total_time(started_at),
+                exec_time: Duration::from_millis(0),
+                //exec_time: calc_total_time(started_at),
                 primes: primes_vec,
                 up_to,
             }

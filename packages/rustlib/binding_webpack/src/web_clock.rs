@@ -1,5 +1,3 @@
-use wasm_bindgen::prelude::*;
-
 use wasm_timer::{SystemTime as WasmSystemTime, UNIX_EPOCH};
 
 use std::time::Duration;

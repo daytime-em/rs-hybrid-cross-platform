@@ -20,7 +20,6 @@ linker = "/Users/edixon/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/pre
 linker = "/Users/edixon/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang"
 ```
 
-
 ### Build with cargo
 
 Just do `cargo build`

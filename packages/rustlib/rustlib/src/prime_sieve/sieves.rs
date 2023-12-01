@@ -1,23 +1,23 @@
 use bitvec::prelude::*;
 use std::{
     collections::BTreeSet,
-    time::{Duration, SystemTime},
+    time::Duration,
 };
 
-use super::PrimesResult;
+use super::{PrimesResult, Clock};
 
 /// Computes primes using a sieve that tries to minimize mem use by storing marked
 /// primes in a tree.
-pub fn tree_sieve(up_to: u64) -> PrimesResult {
+pub fn tree_sieve(up_to: u64, clock: &dyn Clock) -> PrimesResult {
     let mut sieve = TreeSieve::new(up_to);
-    calculate(sieve.limit, &mut sieve.numbers)
+    calculate(sieve.limit, &mut sieve.numbers, clock)
 }
 
 /// Computes primes using a bit buffer to store marked primes. This is the generally-
 /// accepted way to write one of these
-pub fn bit_sieve(up_to: u64) -> PrimesResult {
+pub fn bit_sieve(up_to: u64, clock: &dyn Clock) -> PrimesResult {
     let mut sieve = BitArraySieve::new(up_to);
-    calculate(sieve.limit, &mut sieve.numbers)
+    calculate(sieve.limit, &mut sieve.numbers, clock)
 }
 
 /// Relies on trees to store marked numbers, very slow.
@@ -117,8 +117,8 @@ impl NumberLine for BitVec {
 
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
-fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
-    let started_at = Duration::from_millis(0); //SystemTime::now();
+fn calculate(up_to: u64, number_line: &mut dyn NumberLine, clock: &dyn Clock) -> PrimesResult {
+    let started_at = clock.increasing_millis();
     // let number_line = sieve.number_line();
 
     match up_to {
@@ -126,7 +126,7 @@ fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
             // What primes?
             PrimesResult {
                 primes: vec![],
-                exec_time: Duration::from_millis(0),
+                exec_time: calc_total_time(started_at, clock),
                 up_to,
             }
         }
@@ -134,7 +134,7 @@ fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
             // Freebie
             PrimesResult {
                 primes: vec![2],
-                exec_time: Duration::from_millis(0),
+                exec_time: calc_total_time(started_at, clock),
                 up_to,
             }
         }
@@ -142,8 +142,7 @@ fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
             // Freebie
             PrimesResult {
                 primes: vec![2, 3],
-                // exec_time: calc_total_time(started_at),
-                exec_time: Duration::from_millis(0),
+                exec_time: calc_total_time(started_at, clock),
                 up_to,
             }
         }
@@ -163,7 +162,7 @@ fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {
 
             let primes_vec = number_line.count_primes(&up_to);
             PrimesResult {
-                exec_time: Duration::from_millis(0),
+                exec_time: calc_total_time(started_at, clock),
                 //exec_time: calc_total_time(started_at),
                 primes: primes_vec,
                 up_to,
@@ -186,23 +185,21 @@ fn mark_multiples(num: &u64, up_to: &u64, into: &mut dyn NumberLine) {
     }
 }
 
-fn calc_total_time(starting_time: SystemTime) -> Duration {
-    let end_time = SystemTime::now();
-    end_time
-        .duration_since(starting_time)
-        .expect("invalid starting_time")
+fn calc_total_time(starting_time: Duration, clock: &dyn Clock) -> Duration {
+  let now = clock.increasing_millis();
+  now - starting_time
 }
 
 #[cfg(test)]
 mod bit_sieve_tests {
-    use crate::prime_sieve::sieves::bit_sieve;
+    use crate::prime_sieve::{sieves::bit_sieve, SystemTimeClock};
 
     #[test]
     fn test_fourteen() {
         let num = 14;
         let expected_prime_ct = 6;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -218,7 +215,7 @@ mod bit_sieve_tests {
         let num = 2;
         let expected_prime_ct = 1;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -234,7 +231,7 @@ mod bit_sieve_tests {
         let num = 3;
         let expected_prime_ct = 2;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -250,7 +247,7 @@ mod bit_sieve_tests {
         let num = 4;
         let expected_prime_ct = 2;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -266,7 +263,7 @@ mod bit_sieve_tests {
         let num = 20_000;
         let expected_prime_ct = 2262;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -282,7 +279,7 @@ mod bit_sieve_tests {
         let num = 2_000;
         let expected_prime_ct = 303;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -299,7 +296,7 @@ mod bit_sieve_tests {
         let num = 200_000;
         let expected_prime_ct = 17984;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,
@@ -317,7 +314,7 @@ mod bit_sieve_tests {
         let num = 20_000_000;
         let expected_prime_ct = 1270607;
 
-        let result = bit_sieve(num);
+        let result = bit_sieve(num, &SystemTimeClock::new());
 
         assert_eq!(
             expected_prime_ct,

@@ -115,29 +115,6 @@ impl NumberLine for BitVec {
     }
 }
 
-// impl PrimeSieve for TreeSieve {
-//     fn number_line<'a>(&self) -> &'a mut dyn NumberLine {
-//         &mut self.numbers
-//     }
-
-//     // fn calculate(&mut self) -> PrimesResult {
-//     // calculate_generic(self.limit, &mut self.numbers)
-//     // }
-// }
-
-// impl PrimeSieve for BitArraySieve {
-//     fn number_line<'a>(&self) -> &'a mut dyn NumberLine
-//     where
-//         Self: Sized,
-//     {
-//         &mut self.numbers
-//     }
-
-//     // fn calculate(&mut self) -> PrimesResult {
-//     // calculate_generic(self.limit, &mut self.numbers)
-//     // }
-// }
-
 /// Simple prime sieve that doesn't care how its number line is represented.
 /// Skips even numbers, only goes up to sqrt(up_to), 2 and 3 are freebies
 fn calculate(up_to: u64, number_line: &mut dyn NumberLine) -> PrimesResult {

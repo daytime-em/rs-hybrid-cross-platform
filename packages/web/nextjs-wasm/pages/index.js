@@ -42,6 +42,41 @@ function primeListText(primeData) {
   }
 }
 
+/**
+ * 
+ * @param { regions: number, up_to: number, primes: number[]} params 
+ */
+function groupPrimes(params) {
+  const regions = params.regions;
+  const upTo = params.upTo;
+  const primes = params.primes;
+
+  let realRegionCount = regions;
+  let regionSize = 1;
+  if (upTo <= regions) {
+    // not enough primes to bother grouping
+    regionSize = 1;
+    realRegionCount = upTo; 
+  } else {
+    regionSize = Math.ceil(upTo / regions);
+    realRegionCount = regions;
+  }
+
+  let regionList = [];
+  for (const prime of primes) {
+    let proportion = prime / regionSize;
+    let idx = int(proportion);
+    
+    if (regionList[idx]) {
+      regionList[idx] = regionList[idx] + 1;
+    } else {
+      regionList[idx] = 1;
+    }
+  }
+
+  return regionList;
+}
+
 export default function Home() {
   let [primeData, setPrimeData] = useState(null);
   const upToValue = 3_000_000;

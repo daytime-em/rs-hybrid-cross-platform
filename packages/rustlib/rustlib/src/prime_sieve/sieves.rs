@@ -8,7 +8,7 @@ use super::PrimesResult;
 
 /// Computes primes using a sieve that tries to minimize mem use by storing marked
 /// primes in a tree.
-pub fn slow_sieve(up_to: u64) -> PrimesResult {
+pub fn tree_sieve(up_to: u64) -> PrimesResult {
     let mut sieve = TreeSieve::new(up_to);
     sieve.calculate()
 }

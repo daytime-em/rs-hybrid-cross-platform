@@ -8,7 +8,16 @@ import { useState } from "react";
  * @param {number} upTo
  */
 async function findPrimesAsync(upTo) {
-  return await rustlib.findPrimes(upTo);
+  let primeResult = await rustlib.findPrimes(upTo);
+
+  let groups = groupPrimes({
+    regions: 50,
+    upTo: upTo,
+    primes: primeResult.foundPrimes
+  });
+  console.log("It is groups: ", groups);
+
+  return primeResult;
 }
 
 function maybeCalculatePrimes(upTo, primeData, setPrimeData) {
@@ -65,7 +74,7 @@ function groupPrimes(params) {
   let regionList = [];
   for (const prime of primes) {
     let proportion = prime / regionSize;
-    let idx = int(proportion);
+    let idx = Math.floor(proportion);
     
     if (regionList[idx]) {
       regionList[idx] = regionList[idx] + 1;

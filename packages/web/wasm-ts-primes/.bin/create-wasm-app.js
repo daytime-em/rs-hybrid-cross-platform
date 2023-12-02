@@ -2,6 +2,7 @@
 
 const { spawn } = require("child_process");
 const fs = require("fs");
+const process = require("process");
 
 let folderName = '.';
 
@@ -11,6 +12,8 @@ if (process.argv.length >= 3) {
     fs.mkdirSync(folderName);
   }
 }
+
+console.warn("My working dir", process.cwd());
 
 const clone = spawn("git", ["clone", "https://github.com/rustwasm/create-wasm-app.git", folderName]);
 

@@ -22,7 +22,13 @@ function maybeCalculatePrimes(upTo, primeData, setPrimeData) {
   }
 }
 
-function primeCountText(primeData, upTo) {
+function ResultView(props) {
+  console.log("ResultView: props are", props);
+  console.log("ResultView: This is", this);
+
+  const primeData = props.primeData;
+  const upTo = props.upTo;
+
   if (primeData == null || primeData.primeCount == null) {
     return (<p className={styles.description}>Calculating...</p>);
   }
@@ -137,11 +143,17 @@ function PrimeChart(props) {
     data: data,
   };
   return (
-    <Chart config/>
+    // <Chart config/>
+    <Chart
+     type="line"
+     data={data}
+     />
   );
 }
 
 export default function Home() {
+  console.log("Home: This is", this);
+
   let [primeData, setPrimeData] = useState(null);
   const upToValue = 3_000_000;
 
@@ -158,7 +170,11 @@ export default function Home() {
         <p className={styles.h1}>Prime Counter</p>
 
         <div>
-          {primeCountText(primeData, upToValue)}
+          <ResultView 
+            primeData={primeData}
+            upTo={upToValue}
+          />
+          {/*ResultView(primeData, upToValue)*/}
         </div>
 
         <p className={styles.p}>{primeListText(primeData)}</p>

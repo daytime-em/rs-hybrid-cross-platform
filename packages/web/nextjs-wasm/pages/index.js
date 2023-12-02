@@ -53,6 +53,19 @@ function primeListText(primeData) {
 
 /**
  * 
+ * @param {number[]} approxDensities 
+ */
+function chartData(approxDensities) {
+  let data = {};
+  
+  data.width = 500;
+  data.height = 750;
+
+  data.dataset = approxDensities;
+}
+
+/**
+ * 
  * @param { regions: number, up_to: number, primes: number[]} params 
  */
 function groupPrimes(params) {

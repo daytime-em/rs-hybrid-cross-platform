@@ -4,7 +4,7 @@
   "description": "create an app to consume rust-generated wasm packages",
   "main": "index.js",
   "dependencies": {
-    "rustlib-rustlib_webpack_ts": "file:../../../rustlib-webpack-ts"
+    "rustlib-rustlib_webpack_ts": "file:../../../rustlib-webpack-ts/pkg"
   },
   "bin": {
     "create-wasm-app": ".bin/create-wasm-app.js"

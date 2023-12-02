@@ -18,7 +18,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Corrosion)
 # Import targets defined in a package or workspace manifest `Cargo.toml` file
 corrosion_import_crate(MANIFEST_PATH ../../../../../rustlib/binding_ffi/Cargo.toml)
-#corrosion_import_crate(MANIFEST_PATH ../../../../../rustlib/binding_ffi/Cargo.toml)
 corrosion_experimental_cbindgen(
         TARGET binding_ffi
         HEADER_NAME "rustlib.h"

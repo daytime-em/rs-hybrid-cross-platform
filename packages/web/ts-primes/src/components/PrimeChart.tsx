@@ -5,25 +5,26 @@ export interface PrimeChartProps {
   approxPrimes: number[];
 }
 
-export type PrimeChart<Props extends PrimeChartProps> = (
-  props: Props,
-  context?: any
-) => PrimeChart<any> | null | JSX.Element;
+// export type PrimeChart<Props extends PrimeChartProps> = (
+//   props: Props,
+//   context?: any
+// ) => PrimeChart<any> | null | JSX.Element;
 
 type Datum = {
   x: number;
   y: number;
 };
 
+// export const PrimeChart = (props: PrimeChartProps) => {
 /**
  * A chart of prime numbers, or their approximate density for large sets
  *
  * @param props
  * @returns
  */
-export const PrimeChart = (props: PrimeChartProps) => {
+export function PrimeChart(props: PrimeChartProps) {
   const approxPrimes = props.approxPrimes;
-  const chartData = [];
+  const chartData: Datum[] = [];
   for (let idx = 0; idx < approxPrimes.length; idx++) {
     chartData[idx] = { x: idx, y: approxPrimes[idx] };
   }
@@ -41,31 +42,15 @@ export const PrimeChart = (props: PrimeChartProps) => {
       data: chartData,
     },
   ];
+  // TODO: I think maybe I need useState here for the data?
 
-  // const primaryAxis = React.useMemo<AxisOptions<Datum>> (
-  //   () => ({
-  //     getValue: (datum: Datum) => datum.x,
-  //   }),
-  //   []
-  // );
-  // const secondaryAxis = React.useMemo<AxisOptions<Datum>>(
-  //   () => ({
-  //     getValue: (datum: Datum) => datum.y,
-  //   }),
-  //   []
-  // );
-  const primaryAxis = React.useMemo<
-    AxisOptions<typeof data[number]["data"][number]>
-  >(
+  const primaryAxis = React.useMemo<AxisOptions<Datum>>(
     () => ({
-      getValue: (datum) => datum.x as unknown as number,
+      getValue: (datum) => datum.x,
     }),
     []
   );
-
-  const secondaryAxes = React.useMemo<
-    AxisOptions<typeof data[number]["data"][number]>[]
-  >(
+  const secondaryAxes = React.useMemo<AxisOptions<Datum>[]>(
     () => [
       {
         getValue: (datum) => datum.y,

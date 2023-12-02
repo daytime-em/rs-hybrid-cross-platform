@@ -5,4 +5,5 @@ members = [
     "packages/rustlib/binding_swift",
     "packages/rustlib/binding_ffi",
     "packages/rustlib/binding_webpack",
+    "packages/web/rustlib-webpack-ts",
 ]

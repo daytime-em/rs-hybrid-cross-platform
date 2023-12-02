@@ -1,3 +1,3 @@
-import * as wasm from "rustlib-rustlib_webpack_ts";
+import * as wasm from "hello-wasm-pack";
 
 wasm.greet();

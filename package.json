@@ -1,6 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "./packages/web/rustlib-webpack-ts/pkg"
+    "./packages/web/rustlib-webpack-ts/pkg",
+    "./packages/web/wasm-ts-primes"
   ]
 }

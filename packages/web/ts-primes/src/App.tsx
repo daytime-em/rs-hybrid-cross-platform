@@ -1,8 +1,13 @@
 import React from "react";
 import "./App.css";
 import { PrimeChart } from "./components/PrimeChart";
+import { calcAndLog } from "./utils/calculate";
 
 function App() {
+
+  //todo - remove
+  calcAndLog(700);
+
   return (
     <div className="App">
       <header className="App-header">

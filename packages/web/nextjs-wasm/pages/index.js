@@ -3,6 +3,7 @@ import styles from "../styles/Home.module.css";
 import { default as rustlib } from "rustlib";
 import { useState } from "react";
 import Chart from "chart.js";
+import { PrimeChart } from "../components/PrimeChart";
 
 /**
  *
@@ -36,10 +37,6 @@ function ResultView(props) {
     <PrimeChart 
       upTo={upTo}
       foundPrimes={primeData.foundPrimes}
-      // props={{
-        // upTo: upTo,
-        // foundPrimes: primeData.foundPrimes
-      // }}
     />
     );
 }
@@ -112,7 +109,7 @@ function groupPrimes(params) {
  * @param {upTo: number, foundPrimes: number[]} props 
  * @returns 
  */
-function PrimeChart(props) {
+function PrimeChartChartJs(props) {
   const upTo = props.upTo;
   const foundPrimes = props.foundPrimes;
 
@@ -143,7 +140,6 @@ function PrimeChart(props) {
     data: data,
   };
   return (
-    // <Chart config/>
     <Chart
      type="line"
      data={data}

@@ -1,8 +1,0 @@
-[workspace]
-
-members = [
-    "rustlib/rustlib",
-    "rustlib/binding_swift",
-    "rustlib/binding_ffi",
-    "rustlib/binding_webpack",
-]

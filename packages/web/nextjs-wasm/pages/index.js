@@ -2,6 +2,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { default as rustlib } from "rustlib";
 import { useState } from "react";
+import Chart from "chart.js";
 
 /**
  *
@@ -9,13 +10,6 @@ import { useState } from "react";
  */
 async function findPrimesAsync(upTo) {
   let primeResult = await rustlib.findPrimes(upTo);
-
-  let groups = groupPrimes({
-    regions: 50,
-    upTo: upTo,
-    primes: primeResult.foundPrimes
-  });
-  console.log("It is groups: ", groups);
 
   return primeResult;
 }
@@ -30,9 +24,18 @@ function maybeCalculatePrimes(upTo, primeData, setPrimeData) {
 
 function primeCountText(primeData, upTo) {
   if (primeData == null || primeData.primeCount == null) {
-    return "Calculating";
+    return (<p className={styles.description}>Calculating...</p>);
   }
-  return `There are ${primeData.primeCount} primes between 0 and ${upTo}`;
+  return (
+    <PrimeChart 
+      upTo={upTo}
+      foundPrimes={primeData.foundPrimes}
+      // props={{
+        // upTo: upTo,
+        // foundPrimes: primeData.foundPrimes
+      // }}
+    />
+    );
 }
 
 function primeListText(primeData) {
@@ -47,17 +50,16 @@ function primeListText(primeData) {
       let last25 = primes.slice(primes.length - 25, primes.length).join(", ");
       return `${first25} ... ${last25}`;
     }
-
   }
 }
 
 /**
- * 
- * @param {number[]} approxDensities 
+ *
+ * @param {number[]} approxDensities
  */
 function chartData(approxDensities) {
   let data = {};
-  
+
   data.width = 500;
   data.height = 750;
 
@@ -65,8 +67,8 @@ function chartData(approxDensities) {
 }
 
 /**
- * 
- * @param { regions: number, up_to: number, primes: number[]} params 
+ *
+ * @param { regions: number, up_to: number, primes: number[]} params
  */
 function groupPrimes(params) {
   const regions = params.regions;
@@ -78,7 +80,7 @@ function groupPrimes(params) {
   if (upTo <= regions) {
     // not enough primes to bother grouping
     regionSize = 1;
-    realRegionCount = upTo; 
+    realRegionCount = upTo;
   } else {
     regionSize = Math.ceil(upTo / regions);
     realRegionCount = regions;
@@ -88,7 +90,7 @@ function groupPrimes(params) {
   for (const prime of primes) {
     let proportion = prime / regionSize;
     let idx = Math.floor(proportion);
-    
+
     if (regionList[idx]) {
       regionList[idx] = regionList[idx] + 1;
     } else {
@@ -97,6 +99,46 @@ function groupPrimes(params) {
   }
 
   return regionList;
+}
+
+/**
+ * 
+ * @param {upTo: number, foundPrimes: number[]} props 
+ * @returns 
+ */
+function PrimeChart(props) {
+  const upTo = props.upTo;
+  const foundPrimes = props.foundPrimes;
+
+  console.log("PrimeChart: Init with props: ", props);
+
+  //const labels = Utils.months({ count: 7 });
+  let groups = groupPrimes({
+    regions: 50,
+    upTo: upTo,
+    primes: foundPrimes,
+  });
+  console.log("It is groups: ", groups);
+
+  const data = {
+    labels: [],
+    datasets: [
+      {
+        label: "Approximate Primes",
+        data: groups,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
+  };
+  const config = {
+    type: "line",
+    data: data,
+  };
+  return (
+    <Chart config/>
+  );
 }
 
 export default function Home() {
@@ -115,26 +157,26 @@ export default function Home() {
       <main>
         <p className={styles.h1}>Prime Counter</p>
 
-        <p className={styles.description}>
+        <div>
           {primeCountText(primeData, upToValue)}
-        </p>
+        </div>
 
-        <p className={styles.p}>
-          {primeListText(primeData)}
-        </p>
+        <p className={styles.p}>{primeListText(primeData)}</p>
 
         {/*TODO: Remove this , show something fun instead ;) */}
         <p className={styles.description}>
           <button
             onClick={() => {
-              rustlib.doACallback(
-                "Starting string",
-                this,
-                str => `${str} Plus some appended text`
-              ).then(appended => alert(appended));
+              rustlib
+                .doACallback(
+                  "Starting string",
+                  this,
+                  (str) => `${str} Plus some appended text`
+                )
+                .then((appended) => alert(appended));
             }}
           >
-          Click to test the callback
+            Click to test the callback
           </button>
         </p>
       </main>

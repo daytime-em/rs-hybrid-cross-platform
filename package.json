@@ -1,7 +1,6 @@
 {
   "private": true,
   "workspaces": [
-    "workspace-a", 
-    "workspace-b"
+    "./packages/web/rustlib-webpack-ts/pkg"
   ]
 }

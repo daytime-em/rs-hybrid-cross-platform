@@ -15,12 +15,14 @@ export function PrimeChart(props) {
   const primaryAxis = React.useMemo(
     () => ({
       getValue: datum => datum.x
-    })
+    }),
+    []
   );
   const secondaryAxis = React.useMemo(
     () => ({
       getValue: datum => datum.y
-    })
+    }),
+    []
   );
 
   return (

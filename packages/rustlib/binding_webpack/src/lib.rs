@@ -159,7 +159,7 @@ fn log(str: String) {
 }
 
 mod internal {
-    pub use rustlib::examples::invoke_a_closure_cb;
+    pub use rustlib::invoke_a_closure_cb;
     pub use rustlib::fast_sieve_clock;
     pub use rustlib::simple_sieve_clock;
 }

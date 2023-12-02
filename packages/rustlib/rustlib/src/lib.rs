@@ -1,14 +1,12 @@
 mod prime_sieve;
 
-pub mod examples;
+use prime_sieve::SystemTimeClock;
 
+pub mod examples;
 pub use prime_sieve::Clock;
 pub use prime_sieve::PrimesResult;
 pub use prime_sieve::FromPrimesResult;
-
 pub use examples::invoke_a_closure_cb;
-use prime_sieve::SystemTimeClock;
-
 
 // expose functionality by delegating
 pub fn append_location_by_delegating(str: &str) -> String {
@@ -26,7 +24,7 @@ pub fn fast_sieve(up_to: u64) -> PrimesResult {
   prime_sieve::count_primes_simple(up_to, &SystemTimeClock::new())
 }
 
-/// fast prime sieve. Measure performance time with a SystemTimeClock
+/// slow prime sieve. Measure performance time with a SystemTimeClock
 pub fn simple_sieve(up_to: u64) -> PrimesResult {
   prime_sieve::count_primes_simple(up_to, &SystemTimeClock::new())
 }

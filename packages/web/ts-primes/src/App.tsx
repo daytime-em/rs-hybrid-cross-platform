@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Hello World</p>
+        <p>sieve of erasthones</p>
       </header>
       <main>
         <div className="App-body">

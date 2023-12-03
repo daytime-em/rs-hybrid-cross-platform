@@ -8,6 +8,9 @@ const importWasm = async () => {
 
 /**
  * Nice return type to wrap the JSValue we got from rust.
+ * wasm-bindgen can generate things like this, but they
+ * come with some small strings attached. I'm adding the
+ * type here because it's simpler
  */
 export type PrimesResult = {
   primeCount: number;

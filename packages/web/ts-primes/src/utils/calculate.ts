@@ -4,9 +4,9 @@
 
 console.warn("I got ran because I got imported (presumably)");
 
+// wasm must be loaded asynchronously
+//  ... although, maybe try out syncWebAssembly or top-level await...
 const importWasm = async () => {
-  // wasm must be loaded asynchronously
-  //  ... although, maybe try out syncWebAssembly or top-level await...
   const wasm = await import("rustlib-webpack-ts");
   console.log("Imported wasm module obj", wasm);
   return wasm;
@@ -26,14 +26,4 @@ export async function calcAndLog(n: number) {
   } catch(e) {
     console.error("failed to import wasm ", e);
   }
-
-  // console.log("rustlib imported as object ", rustlib);
-  // console.log("rustlib imported as object ", fastFindPrimes);
-
-  // const result = fastFindPrimes(n);
-  // const result = rustlib.fastFindPrimes(n);
-
-  // TODO - To use wasm, we need to enable some stuff in webpack on our create-react-app
-
-  // console.log("Primes calculated: ", result);
 }

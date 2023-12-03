@@ -38,20 +38,7 @@ extern "C" {
     pub fn alert(s: &str);
 }
 
-// ====== Functions & Types we provide to JS
-
-#[wasm_bindgen(typescript_custom_section)]
-const RUST_PRIMES_TYPE: &'static str = r#"
-interface RustPrimes {
-  execTimeSecs: number;
-  foundPrimes: number[];
-  primeCount: number;
-}
-"#;
-#[wasm_bindgen]
-extern "C" {
-  pub type RustPrimes;
-}
+// ====== Functions we provide to JS
 
 #[wasm_bindgen(js_name = fastFindPrimes)]
 pub fn fast_find_primes(up_to: Option<i32>) -> JsValue {

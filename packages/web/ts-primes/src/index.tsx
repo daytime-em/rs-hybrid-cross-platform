@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import("rustlib-webpack-ts")
+.catch(e => console.error("couldn't load wasm module", e));
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

@@ -24,7 +24,6 @@
     "react-charts": "^3.0.0-beta.57",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "rustlib": "file:../../rustlib/binding_webpack",
     "rustlib-webpack-ts": "file:../rustlib-webpack-ts/pkg",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"

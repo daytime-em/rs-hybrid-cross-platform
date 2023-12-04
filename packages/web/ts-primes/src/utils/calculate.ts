@@ -29,15 +29,12 @@ function groupPrimes(params: {regions: number, upTo: number, primes: number[]}):
   const upTo = params.upTo;
   const primes = params.primes;
 
-  let realRegionCount = regions;
   let regionSize = 1;
   if (upTo <= regions) {
     // not enough primes to bother grouping
     regionSize = 1;
-    realRegionCount = upTo;
   } else {
     regionSize = Math.ceil(upTo / regions);
-    realRegionCount = regions;
   }
 
   let regionList: number[] = [];

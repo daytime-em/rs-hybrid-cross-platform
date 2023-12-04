@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { PrimeChart } from "./components/PrimeChart";
 import { calcAndLog, PrimesResult, calculate } from "./utils/calculate";
+import { stat } from "fs";
 
 // ====== Hooks and stuff
 
@@ -43,7 +44,12 @@ function LoadingContent() {
 }
 
 function NumberInput(props: ComponentProps) {
-  return (<></>);
+  return (
+  <div className="App-Input-Container">
+    <p>Enter a number between 1 and like a few hundred million</p>
+    
+  </div>
+  );
 }
 
 function InstructionChart(props: ComponentProps) {
@@ -58,20 +64,28 @@ function MainContent() {
   const stateHook: AppStateHook = useAppState();
   const currentState = stateHook.state;
 
+  // todo - don't need this
+  calculate(100_000_000)
+    .then((res) => console.log("calculated result", res));
+
   if (currentState.uiState === UiState.result) {
-
+    return (
+      <p></p>
+    );
   } else if (currentState.uiState === UiState.loading) {
-    return (<>
+    return (
+    <>
       <p>Calculating...</p>
-    </>);
+    </>
+    );
   } else /*if (currentState.uiState === UiState.initial)*/ {
-
+    return (
+      <>
+        <NumberInput stateHook={stateHook}/> 
+      </>
+    );
   }
-
-  return (
-    <></>
-  );
-}
+} 
 
 function App() {
 

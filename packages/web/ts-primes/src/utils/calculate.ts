@@ -16,6 +16,7 @@ export type PrimesResult = {
   primeCount: number;
   foundPrimes: number[];
   approxDensities: number[];
+  requestedUpTo: number;
 };
 
 
@@ -64,6 +65,7 @@ export async function calculate(n: number): Promise<PrimesResult | undefined> {
     return {
       primeCount: result.primeCount,
       foundPrimes: result.foundPrimes,
+      requestedUpTo: n,
       approxDensities: groupPrimes({
         regions: 50,
         upTo: n,

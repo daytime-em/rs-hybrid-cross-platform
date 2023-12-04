@@ -5,19 +5,24 @@ import { calcAndLog, PrimesResult, calculate } from "./utils/calculate";
 
 // ====== Hooks and stuff
 
+enum UiState {
+  initial, loading, result
+}
+
 type AppState = {
+  uiState: UiState,
   inputNum: number | undefined,
   primeData: PrimesResult | undefined,
 }
 
 type AppStateHook = {
-  state: AppState | undefined,
-  setState: (data: AppState | undefined) => void,
+  state: AppState,
+  setState: (data: AppState) => void,
 };
 
 function useAppState(): AppStateHook {
-  const [current, setFn] = React.useState<AppState | undefined>({
-    inputNum: undefined, primeData: undefined
+  const [current, setFn] = React.useState<AppState>({
+    uiState: UiState.initial, inputNum: undefined, primeData: undefined
   });
   return {
     state: current,
@@ -51,6 +56,17 @@ function ResultChart(props: ComponentProps) {
 
 function MainContent() {
   const stateHook: AppStateHook = useAppState();
+  const currentState = stateHook.state;
+
+  if (currentState.uiState === UiState.result) {
+
+  } else if (currentState.uiState === UiState.loading) {
+    return (<>
+      <p>Calculating...</p>
+    </>);
+  } else /*if (currentState.uiState === UiState.initial)*/ {
+
+  }
 
   return (
     <></>

@@ -15,7 +15,44 @@ const importWasm = async () => {
 export type PrimesResult = {
   primeCount: number;
   foundPrimes: number[];
+  approxDensities: number[];
 };
+
+
+/**
+ * Group a set of found primes into a specified number of regions, returning the size of
+ * each region
+ */
+function groupPrimes(params: {regions: number, upTo: number, primes: number[]}): number[] {
+  const regions = params.regions;
+  const upTo = params.upTo;
+  const primes = params.primes;
+
+  let realRegionCount = regions;
+  let regionSize = 1;
+  if (upTo <= regions) {
+    // not enough primes to bother grouping
+    regionSize = 1;
+    realRegionCount = upTo;
+  } else {
+    regionSize = Math.ceil(upTo / regions);
+    realRegionCount = regions;
+  }
+
+  let regionList: number[] = [];
+  for (const prime of primes) {
+    let proportion = prime / regionSize;
+    let idx = Math.floor(proportion);
+
+    if (regionList[idx]) {
+      regionList[idx] = regionList[idx] + 1;
+    } else {
+      regionList[idx] = 1;
+    }
+  }
+
+  return regionList;
+}
 
 export async function calculate(n: number): Promise<PrimesResult | undefined> {
   try {
@@ -26,7 +63,12 @@ export async function calculate(n: number): Promise<PrimesResult | undefined> {
     console.log("Calculated some primes", result);
     return {
       primeCount: result.primeCount,
-      foundPrimes: result.foundPrimes
+      foundPrimes: result.foundPrimes,
+      approxDensities: groupPrimes({
+        regions: 50,
+        upTo: n,
+        primes: result.foundPrimes,
+      }),
     };
   } catch (e) {
     console.error("failed to import wasm ", e);

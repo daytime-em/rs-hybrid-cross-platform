@@ -69,7 +69,8 @@ function NumberInput(props: ComponentProps) {
       <button
         onClick={() => {
           if (input) {
-            let parsedInput = parseInt(input);
+            let inputWithoutDelims = input.replace(/[,_.]/g, "");
+            let parsedInput = parseInt(inputWithoutDelims);
             if (parsedInput && !Number.isNaN(parsedInput)) {
               // Update the UI with the new state
               let newState = Object.assign({}, appStateHook.state);

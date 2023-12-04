@@ -35,7 +35,7 @@ cargo install wasm-pack
 
 #### Android-Only
 
-For Android, you'll also need to tell rustc about the NDK with a special `Config.toml`. There's already a template available at [](.cargo/config.toml.template). Just save a copy of that file as `Config.toml` and then edit the config to point to the given paths on your system.
+For Android, you'll also need to tell rustc about the NDK with a special `Config.toml`. There's already a template available at [.cargo/config.toml.template](.cargo/config.toml.template). Just save a copy of that file in the same dir as `Config.toml` and then edit the config to point to the given paths on your system.
 
 ### 3. Edit/Build the Projects
 

@@ -44,7 +44,22 @@ function LoadingContent() {
 }
 
 function NumberInput(props: ComponentProps) {
+  let appStateHook = props.stateHook;
   let [input, setInput] = useState<string>(); 
+
+  const beginCalculating = (n: number) => {
+    calculate(n)
+      .catch((e) => console.error("failed to calculate!", e))
+      .then((result) => {
+        console.log("App: calculation result", result);
+        if (result) {
+            let newState = Object.assign({}, appStateHook.state);
+            newState.uiState = UiState.result;
+            newState.primeData = result;
+            appStateHook.setState(newState);
+        }
+      });
+  };
 
   return (
   <div className="App-Input-Container">
@@ -57,10 +72,21 @@ function NumberInput(props: ComponentProps) {
     </label>
     <button
       onClick={() => {
-        // TODO: Start the calculation here
+        if (input) {
+          let parsedInput = parseInt(input);
+          if (parsedInput && !Number.isNaN(parsedInput)) {
+            // Update the UI with the new state
+            let newState = Object.assign({}, appStateHook.state);
+            newState.uiState = UiState.loading;
+            newState.inputNum = parsedInput;
+            appStateHook.setState(newState);
+
+            beginCalculating(parsedInput);
+          }
+        }
       }} 
     >
-      Calculate 🧮
+      Calculate 📊
     </button>
   </div>
   );
@@ -79,12 +105,16 @@ function MainContent() {
   const currentState = stateHook.state;
 
   // todo - don't need this
-  calculate(100_000_000)
-    .then((res) => console.log("calculated result", res));
+  // calculate(100_000_000)
+    // .then((res) => console.log("calculated result", res));
 
   if (currentState.uiState === UiState.result) {
+    const chartItems = currentState.primeData?.approxDensities as number[];
     return (
-      <p></p>
+      <div>
+        <NumberInput stateHook={stateHook}/> 
+        <PrimeChart approxPrimes={chartItems} />
+      </div>
     );
   } else if (currentState.uiState === UiState.loading) {
     return (

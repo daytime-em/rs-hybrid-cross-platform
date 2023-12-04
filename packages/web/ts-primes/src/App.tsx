@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { PrimeChart } from "./components/PrimeChart";
 import { calcAndLog, PrimesResult, calculate } from "./utils/calculate";
@@ -44,10 +44,24 @@ function LoadingContent() {
 }
 
 function NumberInput(props: ComponentProps) {
+  let [input, setInput] = useState<string>(); 
+
   return (
   <div className="App-Input-Container">
     <p>Enter a number between 1 and like a few hundred million</p>
-    
+    <label>
+      Number: <input 
+        value={input}
+        onChange={ev => setInput(ev.target.value)}
+      />
+    </label>
+    <button
+      onClick={() => {
+        // TODO: Start the calculation here
+      }} 
+    >
+      Calculate 🧮
+    </button>
   </div>
   );
 }

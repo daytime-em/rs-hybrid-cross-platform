@@ -66,6 +66,7 @@ function NumberInput(props: ComponentProps) {
         Number:{" "}
         <input value={input} onChange={(ev) => setInput(ev.target.value)} />
       </label>
+      {" "}
       <button
         onClick={() => {
           if (input) {

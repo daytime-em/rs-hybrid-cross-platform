@@ -5,11 +5,6 @@ export interface PrimeChartProps {
   approxPrimes: number[];
 }
 
-// export type PrimeChart<Props extends PrimeChartProps> = (
-//   props: Props,
-//   context?: any
-// ) => PrimeChart<any> | null | JSX.Element;
-
 type Datum = {
   x: number;
   y: number;
@@ -42,7 +37,6 @@ export function PrimeChart(props: PrimeChartProps) {
       data: chartData,
     },
   ];
-  // TODO: I think maybe I need useState here for the data?
 
   const primaryAxis = React.useMemo<AxisOptions<Datum>>(
     () => ({

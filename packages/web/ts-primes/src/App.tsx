@@ -94,10 +94,6 @@ function MainContent() {
   const stateHook: AppStateHook = useAppState();
   const currentState = stateHook.state;
 
-  // todo - don't need this
-  // calculate(100_000_000)
-  // .then((res) => console.log("calculated result", res));
-
   if (currentState.uiState === UiState.result) {
     const primeData = currentState.primeData as PrimesResult; // guaranteed by contract
     const chartItems = primeData.approxDensities;
@@ -124,12 +120,6 @@ function MainContent() {
 }
 
 function App() {
-  //todo - remove
-  // calcAndLog(700);
-
-  // todo - useAppState hook :)
-  // let [ primeData, setPrimeData ] = React.useState(null);
-
   return (
     <div className="App">
       <header className="App-header">

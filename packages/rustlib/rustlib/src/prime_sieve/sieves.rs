@@ -45,7 +45,7 @@ impl BitSieveData {
     fn new(up_to: u64) -> BitSieveData {
         let mut vec: BitVec<_, _> = BitVec::<usize, Lsb0>::new();
         // Pay the cost of (potentially) 1 usize in order to index from 1
-        let len = (up_to as usize) + 1;
+        let len = (((up_to) / 2) + 1) as usize;
         vec.resize(len, false);
         BitSieveData {
             limit: up_to,
@@ -85,11 +85,14 @@ impl NumberLine for BTreeSet<u64> {
 impl NumberLine for BitVec {
     fn mark_composite(&mut self, num: u64) {
         // Assumes that this space has been allocated
-        self.set(num as usize, true)
+        //  and that we only store odd numbers
+        let idx = (num / 2) as usize;
+        self.set(idx, true)
     }
 
     fn is_marked_composite(&self, num: u64) -> bool {
-        self[num as usize]
+        let idx = (num / 2) as usize;
+        self[idx]
     }
 
     fn count_primes(&self, up_to: &u64) -> Vec<u64> {
@@ -101,7 +104,8 @@ impl NumberLine for BitVec {
             if num >= max {
                 break;
             }
-            if !self[num] {
+            let idx = num / 2;
+            if !self[idx] {
                 out.push(num as u64);
             }
             num += 2;

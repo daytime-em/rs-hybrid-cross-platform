@@ -45,6 +45,7 @@ else
       build-app
       ;;
     start-app)
+      build-wasm-module
       start-app
       ;;
   esac

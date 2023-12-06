@@ -1,6 +1,5 @@
 use std::{hash::Hash, hash::Hasher, time::Duration};
 
-/// A number and its factors
 pub struct PrimesResult {
   pub exec_time: Duration,
   pub primes: Vec<u64>,

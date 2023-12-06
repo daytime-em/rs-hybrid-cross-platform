@@ -51,8 +51,7 @@ function NumberInput(props: ComponentProps) {
         console.log("App: calculation result", result);
         if (result) {
           let newState = Object.assign({}, appStateHook.state);
-          newState.uiState = UiState.result;
-          newState.primeData = result;
+          Object.assign(newState, {uiState: UiState.result, primeData: result});
           appStateHook.setState(newState);
         }
       });
@@ -74,8 +73,7 @@ function NumberInput(props: ComponentProps) {
             if (parsedInput && !Number.isNaN(parsedInput)) {
               // Update the UI with the new state
               let newState = Object.assign({}, appStateHook.state);
-              newState.uiState = UiState.loading;
-              newState.inputNum = parsedInput;
+              Object.assign(newState, {uiState: UiState.loading, inputNum: parsedInput});
               appStateHook.setState(newState);
 
               beginCalculating(parsedInput);

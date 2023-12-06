@@ -19,13 +19,13 @@ pub trait FromPrimesResult {
 
 impl PartialEq for PrimesResult {
   fn eq(&self, other: &PrimesResult) -> bool {
-    self.exec_time == other.exec_time
+    self.up_to == other.up_to
   }
 }
 
 impl Hash for PrimesResult {
   fn hash<H: Hasher>(&self, state: &mut H) {
     // Being unique on the value is enough
-    self.exec_time.hash(state)
+    self.up_to.hash(state)
   }
 }

@@ -1,6 +1,6 @@
 # Hybrid Rust/Android/iOS/Web Monorepo (sorta)
 
-A rust project backing three apps: one iOS, one Android, and one Web (wasm + react). The apps find prime numbers and display them a cool chart of the calculated primes.
+A rust project backing three apps: one iOS, one Android, and one Web (wasm + react). The apps find prime numbers and displays them a cool chart.
 
 Each platform package can link to the compiled rust library from its own build, and none of the platform packages depend on each other. This README has some basic setup instructions for each platform. Each of the Gradle, Xcode, and NPM projects have a README with more information, but you shouldn't need it just to get building.
 
